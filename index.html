@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>FireBudget - Budget Tracker App - v1.0.0.1</title> 
+    <title>FireBudget - Budget Tracker App - v1.0.0.1</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="icon" sizes="192x192" href="https://www.gstatic.com/mobilesdk/160503_mobilesdk/logo/2x/firebase_96dp.png"> 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
@@ -9,9 +9,10 @@
     <link href="./assets/css/base.css" rel="stylesheet">
   <body>
     <div class="main-content">
-        <div class="main-section ">
-            <div class="head-section" id="head">
-                <div class="head-title valign-wrapper">
+        <div class="main-section container-fluid">
+          
+            <div class="head-section row" id="head">
+                <div class="head-title col">
                     <div class="title-wrap">
                         <i class="small material-icons">paid</i> 
                         <span>FIREBUDGET | v1.0.0.1</span> 
@@ -19,31 +20,30 @@
                         <span><a class="nav-link" href="javascript:;">Add Transaction</a></span> 
                     </div>  
                 </div> 
-            </div>
-            <div class="divider"></div>
-            <div class="list-section" id="list">  
-                <div class="row list-wrap">
-                    <div class="col-12 list-full-wrap">
+            </div> 
+            <div class="list-section row" id="list">  
+                <div class="col list-wrap">
+                    <div class="col list-full-wrap">
                       <div class="form-section valign-wrapper" id="form">
                         <div class="row form-wrap">
-                          <div class="col-12 form-header">
-                            <span>Add Transaction</span>
-                          </div>
-                          <form class="col-12 "> 
-                            <div class="row">
-                              <div class="col-12">
+                          <div class="col">
+                            <div class="form-header">
+                              <span>Add Transaction</span>
+                            </div>
+                            <form> 
+                              <div class="form-group fw-unit">
                                 <input placeholder="Date" id="date" type="date" class="datepicker form-control" required>
                                 <label for="date">Date *</label>
                               </div>
-                              <div class="col-12">
+                              <div class="form-group fw-unit">
                                 <input placeholder="Amount" id="amount" type="number" class="validate form-control" required>
                                 <label for="amount">Amount *</label>
                               </div>
-                              <div class="col-12">
+                              <div class="form-group fw-unit">
                                 <input placeholder="Notes" id="notes" type="text" class="validate form-control" required>
                                 <label for="notes">Notes *</label>
                               </div> 
-                              <div class="col-12 ">
+                              <div class="form-group fw-unit">
                                 <select id="cat" class="form-select" required>
                                   <option value="" disabled selected>Choose type of transaction</option>
                                   <option value="VEX">Variable Expense</option>
@@ -52,18 +52,18 @@
                                   <option value="INC">Income</option>
                                 </select> 
                               </div>
-                              <div class="col-12">
+                              <div class="form-group fw-unit">
                                 <select id="subcat" class="form-select" required>
                                   <option value="" disabled selected>Choose reason of transaction</option> 
                                 </select> 
                               </div>
-                              <div class="col-12">
+                              <div class="form-group fw-unit">
                                 <button class="btn btn-info" id="submit" type="button" name="action">Submit
                                   <i class="material-icons right">send</i>
                                 </button>
                               </div>
-                            </div>  
-                          </form>
+                            </form>
+                          </div>
                         </div>
                       </div>
                     </div> 
