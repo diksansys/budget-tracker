@@ -71,6 +71,8 @@ span.highlighted-text {
     padding: 4px;
     color: black;
     background: beige;
+    border-bottom: 1px solid black;
+    margin-top: 12px;
 }
 .form-wrap {
     padding: 1em;
@@ -79,7 +81,7 @@ span.highlighted-text {
 }
 .form-header {
     margin-bottom: 1em;
-    color: white;
+    color: black;
     text-transform: uppercase;
     font-weight: bold;
 }
@@ -211,4 +213,7 @@ span.lrd-unit-title {
     background: darkslateblue;
     color: beige;
     border-bottom: 1px solid beige;
+}
+.fw-unit {
+    margin-bottom: 1em;
 }
