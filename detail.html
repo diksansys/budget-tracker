@@ -59,6 +59,10 @@
                                         <!-- CONTENT TO BE FETCHED -->
                                     </div> 
                                     <div class="lsm-detail-sumary">
+                                        <div class="lsm-detail-unit-header total-income">
+                                            <span>Total Income</span>
+                                            <span class="lrd-unit-value"></span>
+                                        </div>
                                         <div class="lsm-detail-unit-header total-expense">
                                             <span>Total Expense</span>
                                             <span class="lrd-unit-value"></span>
@@ -66,9 +70,9 @@
                                         <div class="lsm-detail-unit-header total-investment">
                                             <span>Total Investment</span>
                                             <span class="lrd-unit-value"></span>
-                                        </div>
-                                        <div class="lsm-detail-unit-header total-income">
-                                            <span>Total Income</span>
+                                        </div> 
+                                        <div class="lsm-detail-unit-header total-balance">
+                                            <span>Total Balance</span>
                                             <span class="lrd-unit-value"></span>
                                         </div>
                                     </div>
@@ -350,6 +354,7 @@
             $(".total-expense").find(".lrd-unit-value").text('₹' + totalExpense);
             $(".total-investment").find(".lrd-unit-value").text('₹' + totalInvestment);
             $(".total-income").find(".lrd-unit-value").text('₹' + totalIncome);
+            $(".total-balance").find(".lrd-unit-value").text('₹' + totalBalance);
         }
 
 

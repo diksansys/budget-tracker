@@ -213,7 +213,11 @@ ul.lsm-detail-unit-list {
 }
 ul.lrd-unit-list li {
     margin: 0;
+    padding: 1px 4px;
 }
 .list-row-date {
     padding: 0 !important;
+}
+.lsm-detail-unit-header.total-balance {
+    background: mediumvioletred;
 }
