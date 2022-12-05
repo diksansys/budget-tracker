@@ -235,14 +235,21 @@
                 
                 let rows = '';
                 expenseGroup.forEach((expense) => {
-
+                    
+                    // Daily statistics
                     dailyBalance += expense.category === 'INC' ? Number(expense.amount) : -1 * Number(expense.amount);
                     dailyExpense += expense.category === 'INC' ? 0 : Number(expense.amount);
                     dailyInvestment += expense.category === 'INV' ? Number(expense.amount) : 0;
                     dailyIncome += expense.category === 'INC' ? Number(expense.amount) : 0;
-                    
                     dailyCatTotal[expense.category] += Number(expense.amount);
                     dailySubCatTotal[expense.subcategory] += Number(expense.amount);
+
+                    totalBalance += dailyBalance;
+                    totalExpense += dailyExpense;
+                    totalInvestment += dailyInvestment;
+                    totalIncome += dailyIncome;
+                    totalCatTotal[expense.category] += Number(expense.amount);
+                    totalSubCatTotal[expense.subcategory] += Number(expense.amount);
 
                     rows += `<div class="col s2 m2">
                         <div class="lrc-unit ${colors[expense.category]}">
@@ -298,14 +305,6 @@
                         </div>
                     </div>
                 </div>`;
-                
-                totalBalance += dailyBalance;
-                totalExpense += dailyExpense;
-                totalInvestment += dailyInvestment;
-                totalIncome += dailyIncome;
-
-                totalCatTotal[expenseGroup[0].category] += dailyCatTotal[expenseGroup[0].category];
-                totalSubCatTotal[expenseGroup[0].subcategory] += dailySubCatTotal[expenseGroup[0].subcategory];
             }
 
             if (list === '') {
