@@ -1,3 +1,6 @@
+body {
+    background: black;
+}
 .card-title {
     font-weight: bold; 
     color: white;
@@ -28,32 +31,27 @@ span.highlighted-text {
     font-weight: bold; 
 }
 
-.list-row {
-    margin-top: 10px;
-    background: rgb(38 166 154 / 26%);
-}
+.list-row {margin-bottom: 10px;background: #008080ad;}
 
 .list-row-content {
-    border-left: 1px solid beige; 
+    padding-left: 0 !important;
+    margin-left: -10px !important;
 }
 .expense-total {
-    color: black;
     font-size: 20px;
     padding: 4px;
     display: block;
-    margin: 1px;
-    background: lawngreen;
+    background: #3a0505;
+    color: beige;
 }
 .lrd-labels {
-    padding-top: 4px;
     border-top: 1px solid;
 }
 
 .lrd-main {
     padding: 10px;
-    margin-top: 10px;
-    background: black;
-    color: white;
+    background: darkred;
+    color: beige;
 }
 .head-title {
     padding: 10px;
@@ -90,9 +88,9 @@ span.highlighted-text {
     background: #0080801f;
 }
 .ls-misc--detail {
-    padding: 1em;
+    padding: 4px;
     background: beige;
-    margin-top: 10px;
+    /* margin-top: 10px; */
 }
 .ls-form-wrap {padding: 1em;margin-top: 10px;background: beige;}
 
@@ -108,19 +106,19 @@ span.highlighted-text {
 
 .sub-head {
     padding: 10px;
-    background: teal;
+    background: #000000ba;
     font-family: monospace;
     font-weight: bold;
     font-size: 12px;
     color: beige;
+    border-bottom: 1px solid beige;
 }
 
 .sub-head span {
     padding: 4px;
     background: black;
 }
-.lsm-detail-unit {
-    padding: 10px;
+.lsm-detail-unit { 
     border-top: 1px solid beige;
     background: #0080801f;
 }
@@ -157,18 +155,15 @@ span.unit-value {
 
 form.form--search {
     background: beige;
-    padding-top: 10px;
+    padding: 4px;
 }
 .list-content-wrap {
-    background: beige;
-    margin-top: 10px;
-    padding: 5px 25px !important;
+    padding: 0 10px 0 10px !important;
 }
 ul.lrd-unit-list {
-    margin: 0; 
-    font-weight: bold; 
-    background: black;
-    color: white;
+    margin: 0;
+    font-weight: bold;
+    display: grid;
 }
 
 ul.lrd-unit-list li {margin-bottom: 10px;padding:2px;}
@@ -180,15 +175,11 @@ span.lrd-unit-value {
     background: lawngreen;
     color: black;
 }
-.lrs-main {
-    padding-top: 10px;
-}
 span.lrd-unit-title {
     color: black;
 }
 .lrc-unit {
     padding: 10px;
-    margin-top: 10px;
 }
 
 .lrc-unit-title {
@@ -216,4 +207,13 @@ span.lrd-unit-title {
 }
 .fw-unit {
     margin-bottom: 1em;
+}
+ul.lsm-detail-unit-list {
+    margin: 0;
+}
+ul.lrd-unit-list li {
+    margin: 0;
+}
+.list-row-date {
+    padding: 0 !important;
 }

@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>FireBudget - Budget Tracker App - v1.0.0.1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="icon" sizes="192x192" href="https://www.gstatic.com/mobilesdk/160503_mobilesdk/logo/2x/firebase_96dp.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -53,7 +54,10 @@
                                         From <span class="sh-unit-1">x-x-x</span> To <span class="sh-unit-2">x-x-x</span>
                                     </div>
                                 </div>
-                                <div class="lsm-detail-wrap">
+                                <div class="lsm-detail-wrap"> 
+                                    <div class="lsm-detail-main">
+                                        <!-- CONTENT TO BE FETCHED -->
+                                    </div> 
                                     <div class="lsm-detail-sumary">
                                         <div class="lsm-detail-unit-header total-expense">
                                             <span>Total Expense</span>
@@ -68,15 +72,14 @@
                                             <span class="lrd-unit-value"></span>
                                         </div>
                                     </div>
-                                    <div class="lsm-detail-main">
-                                        <!-- CONTENT TO BE FETCHED -->
-                                    </div> 
                                 </div> 
                             </div>
                         </div>
                     </div>
                     <div class="col s10 list-content-wrap">
-                        <!--- CONTENT TO BE FETCHED -->
+                        <div class="list-content-main">
+                            <!--- CONTENT TO BE FETCHED -->
+                        </div> 
                     </div> 
                 </div>
             </div>
@@ -251,19 +254,19 @@
                     totalSubCatTotal[expense.subcategory] += amount;
 
                     rows += `<div class="col s2 m2">
-                        <div class="lrc-unit ${colors[expense.category]}">
-                            <div class="lrc-unit-title">
-                                <span>${ categoryDictionary[expense.category] }</span>
-                            </div>
+                        <div class="lrc-unit ${colors[expense.category]}"> 
                             <div class="lrc-unit-content">
                                 <div class="lrc-unit-content-title">
-                                    <span class="">${ categoryDictionary[expense.subcategory] }</span>
+                                    <span class="">${ categoryDictionary[expense.subcategory] }</span><span class="lrd-unit-value">&#8377;${ expense.amount }</span>
                                 </div>
                                 <div class="lrc-unit-content-body">
-                                    <span class="highlighted-text">&#8377;${ expense.amount }</span> 
+                                    <!-- <span class="highlighted-text">&#8377;${ expense.amount }</span> -->
                                     <span>${ expense.notes }</span> 
                                 </div>
                             </div> 
+                            <div class="lrc-unit-title">
+                                <span>${ categoryDictionary[expense.category] }</span>
+                            </div>
                         </div>
                     </div> `;
                 })
@@ -271,8 +274,7 @@
                 let date = new Date(Number(parsedD));
                 list += `<div class="row list-row">
                     <div class="col s1 list-row-date">
-                        <div class="lrd-main">
-                            <i class="small material-icons right">today</i> 
+                        <div class="lrd-main"> 
                             <span class="lrd-m">${monthNames[date.getMonth()]}</span> 
                             <span  class="lrd-d">${date.getDate()}</span> 
                             <span  class="lrd-y">${date.getFullYear()}</span>
@@ -313,11 +315,11 @@
             }
 
             if (list === '') {
-                $(".list-content-wrap").html(`<div class="row list-row">
+                $(".list-content-main").html(`<div class="row list-row">
                     <div class="empty-row">No data found</div>
                 </div>`);
             } else {
-                $(".list-content-wrap").html(list);
+                $(".list-content-main").html(list);
             } 
 
             let lsmDetailList = '';
