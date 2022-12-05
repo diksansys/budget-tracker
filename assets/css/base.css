@@ -1,0 +1,214 @@
+.card-title {
+    font-weight: bold; 
+    color: white;
+    text-transform: uppercase;
+    padding: 2px;
+    background: blueviolet;
+    text-align: center;
+    font-size: 10px;
+}
+.card-content {
+    text-align: center;
+    padding: 5px;
+    border: 1px solid blueviolet;
+    border-top: 0;
+}
+
+.card-content-title {
+    font-weight: bold;
+}
+
+span.highlighted-text {
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+}
+.list-row-date {
+    font-weight: bold; 
+}
+
+.list-row {
+    margin-top: 10px;
+    background: rgb(38 166 154 / 26%);
+}
+
+.list-row-content {
+    border-left: 1px solid beige; 
+}
+.expense-total {
+    color: black;
+    font-size: 20px;
+    padding: 4px;
+    display: block;
+    margin: 1px;
+    background: lawngreen;
+}
+.lrd-labels {
+    padding-top: 4px;
+    border-top: 1px solid;
+}
+
+.lrd-main {
+    padding: 10px;
+    margin-top: 10px;
+    background: black;
+    color: white;
+}
+.head-title {
+    padding: 10px;
+    background: black; 
+    font-size: 1em;
+    color: beige;
+    font-weight: bold;
+    font-family: monospace;
+} 
+.list-section {
+    padding: 0 12px;
+    background: black;
+}
+.nav-link {
+    padding: 4px;
+    color: black;
+    background: beige;
+}
+.form-wrap {
+    padding: 1em;
+    margin-top: 1em;
+    background: beige;
+}
+.form-header {
+    margin-bottom: 1em;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.ls-form--search {
+    padding: 1em; 
+    background: #0080801f;
+}
+.ls-misc--detail {
+    padding: 1em;
+    background: beige;
+    margin-top: 10px;
+}
+.ls-form-wrap {padding: 1em;margin-top: 10px;background: beige;}
+
+.main-head {
+    font-weight: bold;
+    font-size: 1em;
+    text-transform: uppercase;
+    padding: 10px;
+    background: black;
+    color: beige;
+    font-family: monospace;
+}
+
+.sub-head {
+    padding: 10px;
+    background: teal;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 12px;
+    color: beige;
+}
+
+.sub-head span {
+    padding: 4px;
+    background: black;
+}
+.lsm-detail-unit {
+    padding: 10px;
+    border-top: 1px solid beige;
+    background: #0080801f;
+}
+
+.lsm-detail-unit-header {
+    font-weight: bold;
+    background: blueviolet;
+    color: white;
+    padding:4px;
+}
+
+.lsm-detail-unit-list li {
+    padding: 4px;
+    background: black;
+    color: white;
+    border-bottom: 1px solid beige;
+}
+
+span.unit-value {
+    float: right;
+    background: yellow;
+    padding: 0 8px;
+    color: black;
+    border-radius: 4px;
+}
+.form--search .row {
+    margin-bottom: 0;
+}
+
+.search-wrap {
+    padding: 10px;
+    padding-right: 0;
+}
+
+form.form--search {
+    background: beige;
+    padding-top: 10px;
+}
+.list-content-wrap {
+    background: beige;
+    margin-top: 10px;
+    padding: 5px 25px !important;
+}
+ul.lrd-unit-list {
+    margin: 0; 
+    font-weight: bold; 
+    background: black;
+    color: white;
+}
+
+ul.lrd-unit-list li {margin-bottom: 10px;padding:2px;}
+
+span.lrd-unit-value {
+    padding: 0 4px;
+    border-radius: 4px;
+    float: right;
+    background: lawngreen;
+    color: black;
+}
+.lrs-main {
+    padding-top: 10px;
+}
+span.lrd-unit-title {
+    color: black;
+}
+.lrc-unit {
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.lrc-unit-title {
+    padding: 4px;
+    background: blueviolet;
+    text-align: center;
+    color: white;
+}
+
+.lrc-unit-content {
+    padding: 4px;
+    background: #8a2be278;
+    text-align: center;
+    color: beige;
+}
+
+.lrc-unit-content-title {
+    font-weight: bold;
+    background: #8a2be23b;
+}
+.lsm-detail-sumary .lsm-detail-unit-header {
+    background: darkslateblue;
+    color: beige;
+    border-bottom: 1px solid beige;
+}

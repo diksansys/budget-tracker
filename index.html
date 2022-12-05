@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>FireBudget - Budget Tracker App - v1.0.0.1</title>
+    <link rel="icon" sizes="192x192" href="https://www.gstatic.com/mobilesdk/160503_mobilesdk/logo/2x/firebase_96dp.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="./assets/css/base.css" rel="stylesheet">
+  <body>
+    <div class="main-content">
+        <div class="main-section ">
+            <div class="head-section" id="head">
+                <div class="head-title valign-wrapper">
+                    <div class="title-wrap">
+                        <i class="small material-icons">paid</i> 
+                        <span>FIREBUDGET | v1.0.0.1</span> 
+                        <span><a class="nav-link" href="./detail.html">Dashboard</a></span>
+                        <span><a class="nav-link" href="javascript:;">Add Transaction</a></span> 
+                    </div>  
+                </div> 
+            </div>
+            <div class="divider"></div>
+            <div class="list-section" id="list">  
+                <div class="row list-wrap">
+                    <div class="col s12 list-full-wrap">
+                      <div class="form-section valign-wrapper" id="form">
+                        <div class="row form-wrap">
+                          <div class="col s12 form-header">
+                            <span>Add Transaction</span>
+                          </div>
+                          <form class="col s12 "> 
+                            <div class="row">
+                              <div class="input-field col s12">
+                                <input placeholder="Date" id="date" type="date" class="datepicker" required>
+                                <label for="date">Date *</label>
+                              </div>
+                              <div class="input-field col s12">
+                                <input placeholder="Amount" id="amount" type="number" class="validate" required>
+                                <label for="amount">Amount *</label>
+                              </div>
+                              <div class="input-field col s12">
+                                <input placeholder="Notes" id="notes" type="text" class="validate" required>
+                                <label for="notes">Notes *</label>
+                              </div> 
+                              <div class="input-field col s12">
+                                <select id="cat" class="browser-default" required>
+                                  <option value="" disabled selected>Choose type of transaction</option>
+                                  <option value="VEX">Variable Expense</option>
+                                  <option value="FEX">Fixed Expense</option>
+                                  <option value="INV">Investment</option>
+                                  <option value="INC">Income</option>
+                                </select> 
+                              </div>
+                              <div class="input-field col s12">
+                                <select id="subcat" class="browser-default" required>
+                                  <option value="" disabled selected>Choose reason of transaction</option> 
+                                </select> 
+                              </div>
+                              <div class="input-field col s12">
+                                <button class="btn waves-effect waves-light" id="submit" type="button" name="action">Submit
+                                  <i class="material-icons right">send</i>
+                                </button>
+                              </div>
+                            </div>  
+                          </form>
+                        </div>
+                      </div>
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div> 
+    <script type="text/javaScript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script> 
+    <script type="module">
+        import { getFirestore, doc, addDoc, setDoc, query, where, collection, getDocs } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore.js';
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-analytics.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyDhIBZXSBVIUkY3j5QHm_dw6i7GK6zkYAk",
+          authDomain: "elite-air-369616.firebaseapp.com",
+          projectId: "elite-air-369616",
+          storageBucket: "elite-air-369616.appspot.com",
+          messagingSenderId: "88167872801",
+          appId: "1:88167872801:web:f862dec8ad272853d02660",
+          measurementId: "G-D8MTQ9NY3M"
+        };
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+
+        const categoryRelation = {
+            "VEX" : [ "GRO", "MED", "REC", "SHO", "OTT",  "EXP" ],
+            "FEX" : ["TBJ","TOD"],
+            "INV" : ["CRY","PPF","EIN"],
+            "INC" : ["SAL","ESL"]
+        }
+        const categoryDictionary = {
+            "VEX" : "Variable Expense",
+            "FEX" : "Fixed Expense",
+            "INV" : "Investment",
+            "INC" : "Income",
+            "GRO" : "Grocery",
+            "MED" : "Medicine",
+            "REC" : "Recharge",
+            "SHO" : "Shopping",
+            "OTT" : "OTT",
+            "EXP" : "Extra Expense",
+            "TBJ" : "To Bauji",
+            "TOD" : "To Deeksha",
+            "CRY" : "Cryptos",
+            "PPF" : "PPF",
+            "EIN" : "Extra Investment",
+            "SAL" : "Salary",
+            "ESL" : "Extra Income"
+        }
+
+        class Expenses {
+            constructor (datetime, category, subcategory, amount, notes) {
+                this.datetime = datetime
+                this.category = category
+                this.subcategory = subcategory
+                this.amount = amount
+                this.notes = notes
+            }
+        }
+        const expenseConverter = {
+            toFirestore: (expense) => {
+                return {
+                    datetime: expense.datetime,
+                    category: expense.category,
+                    subcategory: expense.subcategory,
+                    amount: expense.amount,
+                    notes: expense.notes
+                };
+            },
+            fromFirestore: (snapshot, options) => {
+                const data = snapshot.data(options);
+                return new Expenses(data.datetime, data.category, data.subcategory, data.amount, data.notes);
+            }
+        };
+
+        function validateInputValues(expense) {
+          if (expense.datetime && expense.category && expense.subcategory && expense.amount && expense.notes) {
+            return true;
+          }
+          return false;
+        }
+          
+        // -----------------------------------------------------------------------------------
+
+        $(document).on('change', '#cat', () => { 
+          let cat = $("#cat").val();  
+          let subcats = categoryRelation[cat]; 
+          
+          let list = '';
+          $.each(subcats, (i, val) => {
+            list += `<option value="${val}">${categoryDictionary[val]}</option>`;
+          })
+
+          $("#subcat").html(
+            `<option value="" disabled selected>Choose reason of transaction</option>${list}`
+          );
+        })
+
+        $(document).on('click', "#submit", (e) => {
+            e.preventDefault();
+
+            let expense = new Expenses(
+              $("#date").val(), 
+              $("#cat").val(),
+              $("#subcat").val(),
+              $("#amount").val(),
+              $("#notes").val()
+            )
+
+            if ( validateInputValues(expense) ) {
+              let response = addDoc(collection(db, "expenseDetail"), expenseConverter.toFirestore(expense));
+              response.then((r) => {
+                $(".form-section form").find("input, select").val(null);
+                M.toast({html: 'Data saved successfully!'})
+              })
+            } else {
+              M.toast({html: 'Please check required fields!'})
+            }
+            
+        })
+
+    </script>
+  </body>
+</html>
+
+
+

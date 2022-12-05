@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>FireBudget - Budget Tracker App - v1.0.0.1</title>
+    <link rel="icon" sizes="192x192" href="https://www.gstatic.com/mobilesdk/160503_mobilesdk/logo/2x/firebase_96dp.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="./assets/css/base.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="main-content">
+        <div class="main-section ">
+            <div class="head-section" id="head">
+                <div class="head-title valign-wrapper">
+                    <div class="title-wrap">
+                        <i class="small material-icons">paid</i> 
+                        <span>FIREBUDGET | v1.0.0.1</span> 
+                        <span><a class="nav-link" href="javascript:;">Dashboard</a></span>
+                        <span><a class="nav-link" href="./index.html">Add Transaction</a></span> 
+                    </div>  
+                </div>  
+            </div>
+            <div class="divider"></div>
+            <div class="list-section" id="list">
+                <div class="search-wrap">  
+                    <form class="form--search">  
+                        <div class="row"> 
+                            <div class="input-field col s2">
+                                <input placeholder="Date" id="lsFromDate" type="date" class="datepicker" required>
+                                <label for="date">From Date *</label>
+                            </div>
+                            <div class="input-field col s2">
+                                <input placeholder="Date" id="lsToDate" type="date" class="datepicker" required>
+                                <label for="date">To Date *</label>
+                            </div> 
+                            <div class="input-field col s2">
+                                <button class="btn waves-effect waves-light" id="lsSubmit" type="button" name="action">Search</button>
+                                <button class="btn waves-effect waves-dark black" id="lsReset" type="button" name="action" >Reset</button>
+                            </div>
+                        </div>  
+                    </form>
+                </div>  
+                <div class="row list-wrap">
+                    <div class="col s2 list-side-wrap">  
+                        <div class="ls-misc-wrap">
+                            <div class="ls-misc--detail">
+                                <div class="lsm-detail-head">
+                                    <div class="main-head">
+                                        <span>Budget Overview</span>
+                                    </div>
+                                    <div class="sub-head">
+                                        From <span class="sh-unit-1">x-x-x</span> To <span class="sh-unit-2">x-x-x</span>
+                                    </div>
+                                </div>
+                                <div class="lsm-detail-wrap">
+                                    <div class="lsm-detail-sumary">
+                                        <div class="lsm-detail-unit-header total-expense">
+                                            <span>Total Expense</span>
+                                            <span class="lrd-unit-value"></span>
+                                        </div>
+                                        <div class="lsm-detail-unit-header total-investment">
+                                            <span>Total Investment</span>
+                                            <span class="lrd-unit-value"></span>
+                                        </div>
+                                        <div class="lsm-detail-unit-header total-income">
+                                            <span>Total Income</span>
+                                            <span class="lrd-unit-value"></span>
+                                        </div>
+                                    </div>
+                                    <div class="lsm-detail-main">
+                                        <!-- CONTENT TO BE FETCHED -->
+                                    </div> 
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s10 list-content-wrap">
+                        <!--- CONTENT TO BE FETCHED -->
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javaScript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script> 
+    <script type="module">
+        import { getFirestore, doc, addDoc, setDoc, query, where, collection, getDocs } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore.js';
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-analytics.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDhIBZXSBVIUkY3j5QHm_dw6i7GK6zkYAk",
+            authDomain: "elite-air-369616.firebaseapp.com",
+            projectId: "elite-air-369616",
+            storageBucket: "elite-air-369616.appspot.com",
+            messagingSenderId: "88167872801",
+            appId: "1:88167872801:web:f862dec8ad272853d02660",
+            measurementId: "G-D8MTQ9NY3M"
+        };
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+
+        const categoryRelation = {
+            "VEX" : [ "GRO", "MED", "REC", "SHO", "OTT",  "EXP" ],
+            "FEX" : ["TBJ","TOD"],
+            "INV" : ["CRY","PPF","EIN"],
+            "INC" : ["SAL","ESL"]
+        }
+        const categoryDictionary = {
+            "VEX" : "Variable Expense",
+            "FEX" : "Fixed Expense",
+            "INV" : "Investment",
+            "INC" : "Income",
+            "GRO" : "Grocery",
+            "MED" : "Medicine",
+            "REC" : "Recharge",
+            "SHO" : "Shopping",
+            "OTT" : "OTT",
+            "EXP" : "Extra Expense",
+            "TBJ" : "To Bauji",
+            "TOD" : "To Deeksha",
+            "CRY" : "Cryptos",
+            "PPF" : "PPF",
+            "EIN" : "Extra Investment",
+            "SAL" : "Salary",
+            "ESL" : "Extra Income"
+        }
+        const colors = {
+            "VEX" : "red accent-2",
+            "FEX" : "orange lighten-1",
+            "INV" : "lime accent-3",
+            "INC" : "green accent-2"
+        }
+        const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun","Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+        class Expenses {
+            constructor (datetime, category, subcategory, amount, notes) {
+                this.datetime = datetime
+                this.category = category
+                this.subcategory = subcategory
+                this.amount = amount
+                this.notes = notes
+            } 
+        }
+        const expenseConverter = {
+            toFirestore: (expense) => {
+                return {
+                    datetime: expense.datetime,
+                    category: expense.category,
+                    subcategory: expense.subcategory,
+                    amount: expense.amount,
+                    notes: expense.notes
+                };
+            },
+            fromFirestore: (snapshot, options) => {
+                const data = snapshot.data(options);
+                return new Expenses(data.datetime, data.category, data.subcategory, data.amount, data.notes);
+            }
+        };
+
+        // ------------------------------------INIT---------------------------------------------------------------
+        // Load all the lists 
+        async function loadList(options = null) {
+
+            // Update date range in sidebar
+            if (options) {
+                $(".sub-head").html(`From <span class="sh-unit-1">${options.fromDate}</span> To <span class="sh-unit-2">${options.toDate}</span>`); 
+            } else {
+                $(".sub-head").html(`All Records`);  
+            }
+            
+            // Init the database query
+            const q = query(collection(db, "expenseDetail").withConverter(expenseConverter));
+            const querySnapshot = await getDocs(q);
+
+            // Loading the structured list
+            let total = 0;
+            let modList = []; 
+
+            // Preparing data along with filtration
+            querySnapshot.forEach((doc) => { 
+                let data = doc.data(); 
+                total += Number(data.amount); 
+                
+                let tD = Infinity, fD = 0;
+                let givenDate = data.datetime;
+
+                if (options) { 
+                    tD = Date.parse(options.toDate);
+                    fD = Date.parse(options.fromDate); 
+                } 
+
+                let gD = Date.parse(givenDate);
+
+                if ( gD >= fD && gD <= tD) { // Filter out the entries on the basis of date range
+                    if (!modList.hasOwnProperty(gD)) {
+                        modList[gD] = [] 
+                    } 
+                    modList[gD].push(data);
+                }  
+            });
+
+            // Sorting process (DESC)
+            let sortedList = [];
+            Object.keys(modList).sort((a,b) => {
+                return b - a;
+            }).forEach((key) => {
+                sortedList[key] = modList[key];
+            });
+
+            // Structure
+            let list = '';
+
+            let totalBalance = 0;
+            let totalExpense = 0;
+            let totalInvestment = 0;
+            let totalIncome = 0;
+            let totalCatTotal = {'VEX' : 0,'FEX' : 0,'INV' : 0,'INC' : 0};
+            let totalSubCatTotal = {"GRO" : 0,"MED" : 0,"REC" : 0,"SHO" : 0,"OTT" : 0,"EXP" : 0,"TBJ" : 0,"TOD" : 0,"CRY" : 0,"PPF" : 0,"EIN" : 0,"SAL" : 0,"ESL" :0 };
+            
+            for (let parsedD in sortedList) { 
+                // Expenses by datetime group
+                let expenseGroup = sortedList[parsedD]; 
+
+                // Total of all transactions
+                let dailyBalance = 0;
+                let dailyExpense = 0;
+                let dailyInvestment = 0;
+                let dailyIncome = 0;
+
+                // Total of all transaction by category 
+                let dailyCatTotal = {'VEX' : 0,'FEX' : 0,'INV' : 0,'INC' : 0};
+                let dailySubCatTotal = {"GRO" : 0,"MED" : 0,"REC" : 0,"SHO" : 0,"OTT" : 0,"EXP" : 0,"TBJ" : 0,"TOD" : 0,"CRY" : 0,"PPF" : 0,"EIN" : 0,"SAL" : 0,"ESL" :0 };
+                
+                let rows = '';
+                expenseGroup.forEach((expense) => {
+
+                    dailyBalance += expense.category === 'INC' ? Number(expense.amount) : -1 * Number(expense.amount);
+                    dailyExpense += expense.category === 'INC' ? 0 : Number(expense.amount);
+                    dailyInvestment += expense.category === 'INV' ? Number(expense.amount) : 0;
+                    dailyIncome += expense.category === 'INC' ? Number(expense.amount) : 0;
+                    
+                    dailyCatTotal[expense.category] += Number(expense.amount);
+                    dailySubCatTotal[expense.subcategory] += Number(expense.amount);
+
+                    rows += `<div class="col s2 m2">
+                        <div class="lrc-unit ${colors[expense.category]}">
+                            <div class="lrc-unit-title">
+                                <span>${ categoryDictionary[expense.category] }</span>
+                            </div>
+                            <div class="lrc-unit-content">
+                                <div class="lrc-unit-content-title">
+                                    <span class="">${ categoryDictionary[expense.subcategory] }</span>
+                                </div>
+                                <div class="lrc-unit-content-body">
+                                    <span class="highlighted-text">&#8377;${ expense.amount }</span> 
+                                    <span>${ expense.notes }</span> 
+                                </div>
+                            </div> 
+                        </div>
+                    </div> `;
+                })
+
+                let date = new Date(Number(parsedD));
+                list += `<div class="row list-row">
+                    <div class="col s1 list-row-date">
+                        <div class="lrd-main">
+                            <i class="small material-icons right">today</i> 
+                            <span class="lrd-m">${monthNames[date.getMonth()]}</span> 
+                            <span  class="lrd-d">${date.getDate()}</span> 
+                            <span  class="lrd-y">${date.getFullYear()}</span>
+                        </div>
+                        <div class="lrd-labels">
+                            <span class="expense-total"><b></b> &#8377;${-1 * dailyBalance}</span> 
+                        </div>
+                    </div>
+                    <div class="col s1 list-row-summary">
+                        <div class="lrs-main">
+                            <ul class="lrd-unit-list">
+                                <li class="${colors["VEX"]}">
+                                    <span class="lrd-unit-title">VEX</span> <span class="lrd-unit-value">&#8377;${dailyCatTotal['VEX']}</span>
+                                </li>
+                                <li class="${colors["FEX"]}">
+                                    <span class="lrd-unit-title">FEX</span> <span class="lrd-unit-value">&#8377;${dailyCatTotal['FEX']}</span>
+                                </li>
+                                <li class="${colors["INV"]}">
+                                    <span class="lrd-unit-title">INV</span> <span class="lrd-unit-value">&#8377;${dailyCatTotal['INV']}</span>
+                                </li>
+                                <li class="${colors["INC"]}">
+                                    <span class="lrd-unit-title">INC</span> <span class="lrd-unit-value">&#8377;${dailyCatTotal['INC']}</span>
+                                </li>
+                            </ul>
+                        </div> 
+                    </div>
+                    <div class="col s10 list-row-content"> 
+                        ${rows}
+                        </div>
+                    </div>
+                </div>`;
+                
+                totalBalance += dailyBalance;
+                totalExpense += dailyExpense;
+                totalInvestment += dailyInvestment;
+                totalIncome += dailyIncome;
+
+                totalCatTotal[expenseGroup[0].category] += dailyCatTotal[expenseGroup[0].category];
+                totalSubCatTotal[expenseGroup[0].subcategory] += dailySubCatTotal[expenseGroup[0].subcategory];
+            }
+
+            if (list === '') {
+                $(".list-content-wrap").html(`<div class="row list-row">
+                    <div class="empty-row">No data found</div>
+                </div>`);
+            } else {
+                $(".list-content-wrap").html(list);
+            } 
+
+            // Updating data in sidebar
+            let lsmDetailList = '';
+            $.each(totalCatTotal, (cat, total) => { console.log(cat,total);
+                let lsmDetailUnitList = '';
+                let subcategories = categoryRelation[cat];
+                subcategories.forEach((subcat) => {
+                    lsmDetailUnitList += `
+                        <li>
+                            <span class="unit-title">${categoryDictionary[subcat]}</span> <span class="unit-value">&#8377;${totalSubCatTotal[subcat]}</span>
+                        </li>
+                    `;
+                })
+                lsmDetailList += `
+                    <div class="lsm-detail-unit">
+                        <div class="lsm-detail-unit-header">
+                            <span>${categoryDictionary[cat]}</span>
+                            <span class="lrd-unit-value">&#8377;${totalCatTotal[cat]}</span>
+                        </div>
+                        <ul class="lsm-detail-unit-list"> 
+                            ${lsmDetailUnitList} 
+                        </ul>
+                    </div>
+                `
+            }); 
+            $(".lsm-detail-main").html(lsmDetailList);
+
+            $(".total-expense").find(".lrd-unit-value").text('₹' + totalExpense);
+            $(".total-investment").find(".lrd-unit-value").text('₹' + totalInvestment);
+            $(".total-income").find(".lrd-unit-value").text('₹' + totalIncome);
+        }
+
+
+        // ----------------------------------EVENTS-------------------------------------------------
+        $(document).ready(function(){
+            loadList();
+        })
+        $(document).on('click', "#lsSubmit", (e) => {
+            e.preventDefault();
+            let lsToDate = $("#lsToDate").val();
+            let lsFromDate = $("#lsFromDate").val();
+            if ( lsToDate && lsFromDate ) {
+                let options = {toDate: lsToDate, fromDate: lsFromDate}
+                loadList(options);
+            } else {
+                M.toast({html: 'Please enter valid date range for search!'})
+            }
+        })
+        $(document).on('click', "#lsReset", (e) => {
+            e.preventDefault();
+            $(".form--search").find('input').val(null);
+            loadList();
+        })
+                
+
+    </script>
+  </body>
+</html>
