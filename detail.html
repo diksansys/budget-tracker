@@ -235,21 +235,20 @@
                 
                 let rows = '';
                 expenseGroup.forEach((expense) => {
+
+                    let amount = Number(expense.amount);
                     
                     // Daily statistics
-                    dailyBalance += expense.category === 'INC' ? Number(expense.amount) : -1 * Number(expense.amount);
-                    dailyExpense += expense.category === 'INC' ? 0 : Number(expense.amount);
-                    dailyInvestment += expense.category === 'INV' ? Number(expense.amount) : 0;
-                    dailyIncome += expense.category === 'INC' ? Number(expense.amount) : 0;
-                    dailyCatTotal[expense.category] += Number(expense.amount);
-                    dailySubCatTotal[expense.subcategory] += Number(expense.amount);
+                    dailyBalance += expense.category === 'INC' ? amount : -1 * amount;
+                    dailyExpense += expense.category === 'INC' ? 0 : amount;
+                    dailyInvestment += expense.category === 'INV' ? amount : 0;
+                    dailyIncome += expense.category === 'INC' ? amount : 0;
+                    dailyCatTotal[expense.category] += amount;
+                    dailySubCatTotal[expense.subcategory] += amount;
 
-                    totalBalance += dailyBalance;
-                    totalExpense += dailyExpense;
-                    totalInvestment += dailyInvestment;
-                    totalIncome += dailyIncome;
-                    totalCatTotal[expense.category] += Number(expense.amount);
-                    totalSubCatTotal[expense.subcategory] += Number(expense.amount);
+                    // Total statistics based on category
+                    totalCatTotal[expense.category] += amount;
+                    totalSubCatTotal[expense.subcategory] += amount;
 
                     rows += `<div class="col s2 m2">
                         <div class="lrc-unit ${colors[expense.category]}">
@@ -305,6 +304,12 @@
                         </div>
                     </div>
                 </div>`;
+
+                // Updating data in sidebar
+                totalBalance += dailyBalance;
+                totalExpense += dailyExpense;
+                totalInvestment += dailyInvestment;
+                totalIncome += dailyIncome;
             }
 
             if (list === '') {
@@ -315,7 +320,6 @@
                 $(".list-content-wrap").html(list);
             } 
 
-            // Updating data in sidebar
             let lsmDetailList = '';
             $.each(totalCatTotal, (cat, total) => { console.log(cat,total);
                 let lsmDetailUnitList = '';
