@@ -31,6 +31,8 @@
                               <span>Add Transaction</span>
                             </div>
                             <form> 
+                              <div class="alert alert-success" role="alert" style="display:none"></div>
+                              <div class="alert alert-danger" role="alert" style="display:none"></div>
                               <div class="form-group fw-unit">
                                 <input placeholder="Date" id="date" type="date" class="datepicker form-control" required>
                                 <label for="date">Date *</label>
@@ -178,10 +180,17 @@
               let response = addDoc(collection(db, "expenseDetail"), expenseConverter.toFirestore(expense));
               response.then((r) => {
                 $(".form-section form").find("input, select").val(null);
-                M.toast({html: 'Data saved successfully!'})
+
+                $(".alert").hide();
+                
+                $('.alert-success').text('Data saved successfully!');
+                $(".alert-success").show().fadeOut(10000);
               })
             } else {
-              M.toast({html: 'Please check required fields!'})
+              $(".alert").hide();
+
+              $('.alert-danger').text('Please check required fields!');
+              $(".alert-danger").show().fadeOut(10000);
             }
             
         })
