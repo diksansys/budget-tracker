@@ -3,201 +3,208 @@
   <head>
     <title>FireBudget - Budget Tracker App - v1.0.0.1</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" sizes="192x192" href="https://www.gstatic.com/mobilesdk/160503_mobilesdk/logo/2x/firebase_96dp.png"> 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="assets/img/favicon_io/site.webmanifest">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="./assets/css/base.css" rel="stylesheet">
+  </head>
   <body>
     <div class="main-content">
-        <div class="main-section container-fluid">
-          
-            <div class="head-section row" id="head">
-                <div class="head-title col">
-                    <div class="title-wrap">
-                        <i class="small material-icons">paid</i> 
-                        <span>FIREBUDGET | v1.0.0.1</span> 
-                        <span><a class="nav-link" href="./detail.html">Dashboard</a></span>
-                        <span><a class="nav-link" href="javascript:;">Add Transaction</a></span> 
+        <div class="body-section">
+            <div class="head-section">
+                <div class="head-title">
+                    <div class="title-wrap"> 
+                        <span>FIREBUDGET </span> <span style="float:right"> v1.0.1</span>
                     </div>  
-                </div> 
+                </div>  
             </div> 
-            <div class="list-section row" id="list">  
-                <div class="col list-wrap">
-                    <div class="col list-full-wrap">
-                      <div class="form-section valign-wrapper" id="form">
-                        <div class="row form-wrap">
-                          <div class="col">
-                            <div class="form-header">
-                              <span>Add Transaction</span>
-                            </div>
-                            <form> 
-                              <div class="alert alert-success" role="alert" style="display:none"></div>
-                              <div class="alert alert-danger" role="alert" style="display:none"></div>
-                              <div class="form-group fw-unit">
-                                <input placeholder="Date" id="date" type="date" class="datepicker form-control" required>
-                                <label for="date">Date *</label>
-                              </div>
-                              <div class="form-group fw-unit">
-                                <input placeholder="Amount" id="amount" type="number" class="validate form-control" required>
-                                <label for="amount">Amount *</label>
-                              </div>
-                              <div class="form-group fw-unit">
-                                <input placeholder="Notes" id="notes" type="text" class="validate form-control" required>
-                                <label for="notes">Notes *</label>
-                              </div> 
-                              <div class="form-group fw-unit">
-                                <select id="cat" class="form-select" required>
-                                  <option value="" disabled selected>Choose type of transaction</option>
-                                  <option value="VEX">Variable Expense</option>
-                                  <option value="FEX">Fixed Expense</option>
-                                  <option value="INV">Investment</option>
-                                  <option value="INC">Income</option>
-                                </select> 
-                              </div>
-                              <div class="form-group fw-unit">
-                                <select id="subcat" class="form-select" required>
-                                  <option value="" disabled selected>Choose reason of transaction</option> 
-                                </select> 
-                              </div>
-                              <div class="form-group fw-unit">
-                                <button class="btn btn-info" id="submit" type="button" name="action">Submit </button>
-                              </div>
-                            </form>
-                          </div>
+            <div class="main-section container"> 
+                <div class="top-bar-section">
+                    <div class="top-bar-wrap row align-items-center">
+                        <div class="tb-welcome col-4">
+                            <span>Hello</span><span class="tbw-user-name">Shudhansh</span>
                         </div>
-                      </div>
-                    </div> 
+                        <div class="tb-action col-8 text-right">
+                            <span class="material-icons">search</span>
+                        </div>
+                    </div>
+                    <div class="search-wrap" style="display:none;">  
+                        <form class="form--search">  
+                            <div class="form-input-row"> 
+                                <div class="input-field">
+                                    <input placeholder="Date" id="lsFromDate" type="date" class="form-control datepicker" required>
+                                </div>
+                                <div class="input-field">
+                                    <input placeholder="Date" id="lsToDate" type="date" class="form-control datepicker" required>
+                                </div> 
+                                <div class="input-field">
+                                    <button class="btn btn-info" id="lsSubmit" type="button" name="action">Search</button>
+                                    <button class="btn btn-dark" id="lsReset" type="button" name="action">Reset</button>
+                                    <button class="btn btn-dark" id="lsCancel" type="button" name="action">Close</button>
+                                </div>
+                            </div>  
+                        </form>
+                    </div>  
+                </div>
+                <div class="overview-section">
+                    <div class="stats-wrap">
+                        <div class="sw-title-wrap row align-items-center">
+                            <div class="swt-title col-8">
+                                <div class="swt-title-text"><span>Balance</span></div>
+                                <div class="swt-title-body"><span>--</span></div>
+                            </div>
+                            <div class="swt-action col-4 text-right">
+                                <div class="swt-action-icons"> 
+                                    <div class="swt-date-range">
+                                        <span class="swt-date swtFromDate">--</span>
+                                        <span class="swt-date swtToDate">--</span>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sw-chart-wrap">
+                            <div class="swt-chart-main">
+                                <div id="myChart"></div> 
+                            </div>  
+                        </div>
+                    </div>
+                    <div class="category-wrap">
+                        <div class="cw-content row">
+                            <div class="col cwTotalExpense">
+                                <span class="info-icon totalExpenseIcon">
+                                    <i class="material-icons">monetization_on</i>
+                                </span>
+                                <span class="info-badge totalExpense"> ₹0</span>
+                            </div>
+                            <div class="col cwTotalInvestment">
+                                <span class="info-icon totalInvestmentIcon">
+                                    <i class="material-icons">energy_savings_leaf</i>
+                                </span>
+                                <span class="info-badge totalInvestment">₹0</span>
+                            </div>
+                            <div class="col cwTotalIncome">
+                                <span class="info-icon incomeIcon">
+                                    <i class="material-icons">payments</i>
+                                </span>
+                                <span class="info-badge totalIncome">₹0</span> 
+                            </div>
+                        </div>
+                        <div class="cw-subcontent">
+                            <div class="cwsb-unit cwsbExpense" style="display:none"></div>
+                            <div class="cwsb-unit cwsbInvestment" style="display:none"></div>
+                            <div class="cwsb-unit cwsbIncome" style="display:none"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="list-section"> 
+                    <div class="list-wrap">
+                        <div class="list-content">
+                            <ul class="list-unstyled cat-row">
+                                
+                            </ul> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-section">
+            <div class="footer-float-section text-center">
+                <a href="javascript:;" class="ffs-btn"><span class="material-icons">add</span></a>
+            </div>
+            <div class="footer-link-wrap">
+                <div class="footer-link-list">
+                    <ul class="nav justify-content-center">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">
+                                <span class="material-icons">explore</span>
+                                <span class="fl-link-text">Discover</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" >
+                            <a class="nav-link" disabled href="javascript:;">
+                                <span class="material-icons">receipt</span>
+                                <span class="fl-link-text">Receipts</span>
+                            </a>
+                        </li>
+                        <li class="nav-item" >
+                            <a class="nav-link" disabled href="javascript:;">
+                                <span class="material-icons">equalizer</span>
+                                <span class="fl-link-text">Stats</span>
+                            </a>
+                        </li> 
+                        <li class="nav-item" >
+                            <a class="nav-link" disabled href="javascript:;">
+                                <span class="material-icons">person</span>
+                                <span class="fl-link-text">Profile</span>
+                            </a>
+                        </li> 
+                    </ul>
                 </div>
             </div>
         </div>
     </div> 
-    <script type="text/javaScript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script> 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-    <script type="module">
-        import { getFirestore, doc, addDoc, setDoc, query, where, collection, getDocs } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-firestore.js';
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-analytics.js";
-
-        const firebaseConfig = {
-          apiKey: "AIzaSyDhIBZXSBVIUkY3j5QHm_dw6i7GK6zkYAk",
-          authDomain: "elite-air-369616.firebaseapp.com",
-          projectId: "elite-air-369616",
-          storageBucket: "elite-air-369616.appspot.com",
-          messagingSenderId: "88167872801",
-          appId: "1:88167872801:web:f862dec8ad272853d02660",
-          measurementId: "G-D8MTQ9NY3M"
-        };
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const db = getFirestore(app);
-
-        const categoryRelation = {
-            "VEX" : [ "GRO", "MED", "REC", "SHO", "OTT",  "EXP" ],
-            "FEX" : ["TBJ","TOD"],
-            "INV" : ["CRY","PPF","EIN"],
-            "INC" : ["SAL","ESL"]
-        }
-        const categoryDictionary = {
-            "VEX" : "Variable Expense",
-            "FEX" : "Fixed Expense",
-            "INV" : "Investment",
-            "INC" : "Income",
-            "GRO" : "Grocery",
-            "MED" : "Medicine",
-            "REC" : "Recharge",
-            "SHO" : "Shopping",
-            "OTT" : "OTT",
-            "EXP" : "Extra Expense",
-            "TBJ" : "To Bauji",
-            "TOD" : "To Deeksha",
-            "CRY" : "Cryptos",
-            "PPF" : "PPF",
-            "EIN" : "Extra Investment",
-            "SAL" : "Salary",
-            "ESL" : "Extra Income"
-        }
-
-        class Expenses {
-            constructor (datetime, category, subcategory, amount, notes) {
-                this.datetime = datetime
-                this.category = category
-                this.subcategory = subcategory
-                this.amount = amount
-                this.notes = notes
-            }
-        }
-        const expenseConverter = {
-            toFirestore: (expense) => {
-                return {
-                    datetime: expense.datetime,
-                    category: expense.category,
-                    subcategory: expense.subcategory,
-                    amount: expense.amount,
-                    notes: expense.notes
-                };
-            },
-            fromFirestore: (snapshot, options) => {
-                const data = snapshot.data(options);
-                return new Expenses(data.datetime, data.category, data.subcategory, data.amount, data.notes);
-            }
-        };
-
-        function validateInputValues(expense) {
-          if (expense.datetime && expense.category && expense.subcategory && expense.amount && expense.notes) {
-            return true;
-          }
-          return false;
-        }
-          
-        // -----------------------------------------------------------------------------------
-
-        $(document).on('change', '#cat', () => { 
-          let cat = $("#cat").val();  
-          let subcats = categoryRelation[cat]; 
-          
-          let list = '';
-          $.each(subcats, (i, val) => {
-            list += `<option value="${val}">${categoryDictionary[val]}</option>`;
-          })
-
-          $("#subcat").html(
-            `<option value="" disabled selected>Choose reason of transaction</option>${list}`
-          );
-        })
-
-        $(document).on('click', "#submit", (e) => {
-            e.preventDefault();
-
-            let expense = new Expenses(
-              $("#date").val(), 
-              $("#cat").val(),
-              $("#subcat").val(),
-              $("#amount").val(),
-              $("#notes").val()
-            )
-
-            if ( validateInputValues(expense) ) {
-              let response = addDoc(collection(db, "expenseDetail"), expenseConverter.toFirestore(expense));
-              response.then((r) => {
-                $(".form-section form").find("input, select").val(null);
-
-                $(".alert").hide();
-                
-                $('.alert-success').text('Data saved successfully!');
-                $(".alert-success").show().fadeOut(10000);
-              })
-            } else {
-              $(".alert").hide();
-
-              $('.alert-danger').text('Please check required fields!');
-              $(".alert-danger").show().fadeOut(10000);
-            }
-            
-        })
-
-    </script>
+    <div class="extra-content">
+        <div class="ec-1-form addExpenseForm" style="display:none">
+            <h5>Add Expense/Transaction</h5>
+            <form> 
+                <div class="alert alert-success" role="alert" style="display:none"></div>
+                <div class="alert alert-danger" role="alert" style="display:none"></div>
+                <div class="form-group fw-unit">
+                  <input placeholder="Date" id="date" type="date" class="datepicker form-control" required>
+                  <label for="date">Date *</label>
+                </div>
+                <div class="form-group fw-unit">
+                  <input placeholder="Amount" id="amount" type="number" class="validate form-control" required>
+                  <label for="amount">Amount *</label>
+                </div>
+                <div class="form-group fw-unit">
+                  <input placeholder="Notes" id="notes" type="text" class="validate form-control" required>
+                  <label for="notes">Notes *</label>
+                </div> 
+                <div class="form-group fw-unit">
+                  <select id="cat" class="form-select form-control" required>
+                    <option value="" disabled selected>Choose type of transaction</option>
+                    <option value="VEX">Variable Expense</option>
+                    <option value="FEX">Fixed Expense</option>
+                    <option value="INV">Investment</option>
+                    <option value="INC">Income</option>
+                  </select> 
+                </div>
+                <div class="form-group fw-unit">
+                  <select id="subcat" class="form-select form-control" required>
+                    <option value="" disabled selected>Choose reason of transaction</option> 
+                  </select> 
+                </div>
+                <div class="form-group fw-unit">
+                    <select id="recurrenceDaysSelection" class="form-select form-control" required>
+                      <option value="" disabled selected>Choose Recurrence</option> 
+                      <option value="1">One Time Transaction</option> 
+                      <!-- <option value="2">Weekly</option>  -->
+                      <option value="3">Last Day of Each Month</option> 
+                      <option value="4">First Day of Each Month</option> 
+                      <option value="5">Monthly</option> 
+                      <option value="8">Quarterly</option> 
+                      <option value="6">Yearly</option> 
+                      <option value="7">Custom (days)</option> 
+                    </select> 
+                </div>
+                <div class="form-group fw-unit" id="recurrenceDaysWrap" style="display:none">
+                    <input placeholder="Enter number of recurrence days" id="recurrenceDays" type="number" class="validate form-control" required>
+                    <label for="amount">Recurrence Days *</label>
+                  </div>
+                <div class="form-group fw-unit">
+                  <button class="btn btn-info" id="submit" type="button" name="action">Submit </button>
+                </div>
+              </form>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script type="module" src="./assets/js/Events/add-transaction.js"></script> 
+    <script type="module" src="./assets/js/Events/load-list.js"></script>    
   </body>
 </html>
-
-
-

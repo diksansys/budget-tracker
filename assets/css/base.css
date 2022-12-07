@@ -1,6 +1,3 @@
-body {
-    background: black;
-}
 .card-title {
     font-weight: bold; 
     color: white;
@@ -54,23 +51,16 @@ span.highlighted-text {
     color: beige;
 }
 .head-title {
-    padding: 10px;
-    background: black; 
-    font-size: 1em;
-    color: beige;
+    padding: 12px;
+    background: white;
+    font-size: 20px;
+    color: #580e58;
     font-weight: bold;
-    font-family: monospace;
+    border-bottom: 1px solid #ccc;
 } 
 .list-section {
     padding: 0 12px;
-    background: black;
-}
-.nav-link {
-    padding: 4px;
-    color: black;
-    background: beige;
-    border-bottom: 1px solid black;
-    margin-top: 12px;
+    padding-top: 12px;
 }
 .form-wrap {
     padding: 1em;
@@ -144,19 +134,17 @@ span.unit-value {
     color: black;
     border-radius: 4px;
 }
-.form--search .row {
-    margin-bottom: 0;
-}
+.form--search .row {margin: 0;}
 
 .search-wrap {
     padding: 10px;
-    padding-right: 0;
+    background: snow;
+    margin-bottom: 1em;
+    border: 1px solid #ccc;
+    border-radius: 1em;
 }
 
-form.form--search {
-    background: beige;
-    padding: 4px;
-}
+form.form--search {}
 .list-content-wrap {
     padding: 0 10px 0 10px !important;
 }
@@ -220,4 +208,212 @@ ul.lrd-unit-list li {
 }
 .lsm-detail-unit-header.total-balance {
     background: mediumvioletred;
+}
+.footer-link-wrap {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    background: white;
+    border-top: 1px solid lightgrey;
+}
+.main-section {
+    background: white; 
+}
+
+.top-bar-wrap {
+    padding: 8px;
+    overflow: hidden;
+}
+
+.footer-link-list ul {
+    display: flex;
+}
+
+.footer-link-list li a span {
+    display: block;
+}
+
+.footer-link-list li {
+    width: 25%;
+    text-align: center;
+}
+
+.footer-link-list li a.active {color: darkmagenta;}
+
+.footer-link-list li a {
+    color: #0000009c;
+}
+.tb-welcome {
+    font-size: 20px;
+}
+.stats-wrap {
+    padding: 8px;
+    background: #4c124c;
+    border-radius: 1em 1em 0 0;
+    color: white;
+}
+
+.sw-title-wrap {
+    padding: 8px;
+}
+
+.swt-title-body span {
+    font-weight: bold;
+    font-size: 1.5em;
+}
+.footer-float-section {
+    position: fixed;
+    width: 100%;
+    bottom: 5%;
+    z-index: 99;
+}
+
+a.ffs-btn {
+    padding: 25px 15px 12px 15px;
+    background: darkmagenta;
+    border-radius: 2em;
+    width: 55px;
+    box-shadow: 0px 0px 8px 1px grey;
+    color: white;
+}
+.list-header {padding: 12px 0;font-size: 1em;color: #b3b3b3;font-weight: bold;}
+.media-body {
+    float: right;
+}
+.media-image span {
+    display: block;
+    padding: 12px;
+    background: #ededed;
+    border-radius: 1em;
+    color: blueviolet;
+    width:48px;
+}
+.mb-title {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.mb-sub-title {
+    color: grey;
+}
+
+.mbc-main {
+    font-weight: bold;
+}
+
+.mbc-sub-conent {
+    color: grey;
+}
+.subcat-row li {
+    padding: 10px 0;
+    border-bottom: 1px solid #d5d5d5;
+    background: #8b008b05;
+}
+.footer-section {
+    position: relative;
+    height: 80px;
+}
+.ec-1-form {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    bottom: 65px;
+    background: #565656f0;
+    padding: 10px;
+}
+.ec-1-form.addExpenseForm h5 {
+    color: white;
+    font-size: 18px;
+    text-transform: uppercase;
+    font-family: monospace;
+    font-weight: bold;
+    padding: 20px;
+}
+
+a.ffs-btn.open {
+    background: black;
+}
+.addExpenseForm form {padding: 25px;background: white;border-radius: 4px;}
+span.swt-date {
+    display: block;
+    padding: 2px;
+    text-align: center;
+    background: white;
+    border-radius: 4px;
+    margin-bottom: 1px;
+    color: #721c24;
+    font-size: 14px;
+    font-weight: bold;
+}
+span.tbw-user-name {padding: 8px;color: darkred;}
+.cw-content.row {
+    text-align: center;
+}
+
+.info-badge {
+    padding: 10px;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+span.info-badge.totalExpense {
+    color: red;
+}
+
+span.info-badge.totalInvestment {
+    color: orange;
+}
+
+.category-wrap {
+    padding: 12px;
+    background: #520752;
+    border-top: 1px solid #2e122e;
+    border-radius: 0 0 1em 1em;
+}
+
+span.info-badge.totalIncome {color: lightgreen;}
+span.info-icon {
+    float: left;
+}
+.totalExpenseIcon {
+    color: red;
+}
+
+span.info-icon.totalInvestmentIcon {
+    color: orange;
+}
+
+.incomeIcon {
+    color: lightgreen;
+}
+.input-field {
+    margin-bottom: 8px;
+}
+button#lsCancel, button#lsReset {
+    float: right;
+}
+button#lsReset {
+    margin-left: 10px;
+}
+.info-group {
+    float: left;
+    width: 33%;
+}
+
+.cwsb-unit {
+    overflow: hidden;
+    padding: 4px;
+    background: #5e045e;
+    color: white;
+}
+.active.cwTotalExpense {
+    border-bottom: 1px solid red;
+}
+
+.active.cwTotalInvestment {
+    border-bottom: 1px solid orange;
+}
+
+.active.cwTotalIncome {
+    border-bottom: 1px solid lightgreen;
 }
