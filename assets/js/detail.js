@@ -94,23 +94,25 @@ async function loadList(options = null) {
             fD = Date.parse(options.fromDate); 
         } 
 
-        let gD = Date.parse(givenDate);
+        tD += 86400000;
 
-        if ( gD >= fD && gD <= tD) { // Filter out the entries on the basis of date range
+        let gD = Date.parse(givenDate); 
+
+        if ( gD >= fD && gD <= tD) {  // Filter out the entries on the basis of date range
             if (!modList.hasOwnProperty(gD)) {
                 modList[gD] = [] 
             } 
             modList[gD].push(data);
         }  
     });
-
+    
     // Sorting process (DESC)
     let sortedList = [];
     Object.keys(modList).sort((a,b) => {
         return b - a;
     }).forEach((key) => {
         sortedList[key] = modList[key];
-    });
+    }); 
 
     // Calculation
     let totalBalance = 0;
