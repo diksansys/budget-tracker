@@ -264,7 +264,7 @@ ul.lrd-unit-list li {
 .footer-float-section {
     position: fixed;
     width: 100%;
-    bottom: 5%;
+    bottom: 6%;
     z-index: 99;
 }
 
