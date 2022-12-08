@@ -89,17 +89,3 @@ $(document).on('click', '.cwTotalIncome', (e) => {
     }
 });
 
-$(document).on('click', ".ffs-btn", (e) => {
-    e.preventDefault();
-    
-    if ($('.ffs-btn').hasClass('open')) {
-        $(".addExpenseForm").hide();
-        $(".ffs-btn").removeClass('open');
-        $(".ffs-btn").find('.material-icons').text('add');
-    } else {
-        $(".addExpenseForm").show();
-        $(".ffs-btn").addClass('open');
-        $(".ffs-btn").find('.material-icons').text('close');
-    } 
-})
-

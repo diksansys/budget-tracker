@@ -84,6 +84,7 @@ async function loadList(options = null) {
     let modList = []; 
     querySnapshot.forEach((doc) => { 
         let data = doc.data(); 
+        data.id = doc.id;
         total += Number(data.amount); 
         
         let tD = Infinity, fD = 0;
@@ -105,7 +106,7 @@ async function loadList(options = null) {
             modList[gD].push(data);
         }  
     });
-    
+
     // Sorting process (DESC)
     let sortedList = [];
     Object.keys(modList).sort((a,b) => {
@@ -156,7 +157,7 @@ async function loadList(options = null) {
         totalExpense += dailyExpense;
         totalInvestment += dailyInvestment;
         totalIncome += dailyIncome; 
-    }
+    } 
 
     // Structure 
     let allEntries = '';
@@ -167,7 +168,7 @@ async function loadList(options = null) {
 
         expenseGroup.forEach((expense) => { 
             multipleItemsForTheDay += `
-                <li class="row align-items-center">
+                <li class="row subcat-row-item align-items-center" data-id="${expense.id}">
                     <div class="media-image col-2">
                         <span class="material-icons">${iconDictionary[expense.subcategory]}</span>
                     </div>

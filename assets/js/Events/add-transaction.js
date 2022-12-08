@@ -1,4 +1,5 @@
-import {db, addDoc, collection} from './../app.js';
+import { loadList } from '../detail.js';
+import {where, query, db, deleteDoc, getDocs, getDoc, doc, setDoc, addDoc, collection} from './../app.js';
 import {categoryRelation, categoryDictionary} from './../Dict/dictionary.js';
 import {expenseConverter,Expenses} from './../Entity/expense.js';
 
@@ -34,8 +35,6 @@ Date.prototype.addYears = function (value) {
     return this;
 };
 
-var options = {};
-
 function validateInputValues(expense) {
     if (expense.datetime && expense.category && expense.subcategory && expense.amount && expense.notes) {
         return true;
@@ -43,16 +42,18 @@ function validateInputValues(expense) {
     return false;
 }
 
+// Convert to standard date
 function standardDate(date) {
     return date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate(); 
 }
 
-function getDateRange(options, expense) {
+// Get date range according to expense frequency
+function getDateRange(expense) {
     let originalDate = expense.datetime;
     let range = [];
-    if (options.hasRecurrence) { 
-        switch(options.recurrenceValue) { 
-            case 'LDM': // Last day of each month
+    if (expense.hasRecurrence) { 
+        switch(expense.recurrenceFrequency) { 
+            case 'LM': // Last day of each month
                 for (let i=0; i<12; i++) { // pushing data for 12 months only now 
                     let currentDay = new Date(originalDate); 
                     currentDay.addMonths(i);
@@ -60,7 +61,7 @@ function getDateRange(options, expense) {
                     range.push(standardDate(currentDay));
                 } 
                 break;
-            case 'FDM': // First day of each month
+            case 'FM': // First day of each month
                 for (let i=0; i<12; i++) { // pushing data for 12 months only now 
                     let currentDay = new Date(originalDate); 
                     currentDay.addMonths(i);
@@ -68,28 +69,28 @@ function getDateRange(options, expense) {
                     range.push(standardDate(currentDay));
                 } 
                 break;
-            case 'M': // Monthly
+            case 'MO': // Monthly
                 for (let i=0; i<12; i++) { // pushing data for 12 months only now 
                     let currentDay = new Date(originalDate);  
                     currentDay.addMonths(i); 
                     range.push(standardDate(currentDay));
                 } 
                 break;
-            case 'Y': // Yearly
+            case 'YY': // Yearly
                 for (let i=0; i<4; i++) { // pushing data for 4 years only now 
                     let currentDay = new Date(originalDate); 
                     currentDay.addYears(i); 
                     range.push(standardDate(currentDay));
                 } 
                 break;
-            case 'C': // Custom day frequency
+            case 'CD': // Custom day frequency
                 for (let i=0; i<12; i++) { // pushing data for 12 times only now 
                     let currentDay = new Date(originalDate); 
-                    currentDay.setDate(today.getDate() + recurrenceFrequency*i); 
+                    currentDay.setDate(today.getDate() + (expense.recurrenceValue * i) ); 
                     range.push(standardDate(currentDay));
                 } 
                 break; 
-            case 'Q': // Quarterly
+            case 'QU': // Quarterly
                 for (let i=0; i<4; i++) { // pushing data for 1 years only now 
                     let currentDay = new Date(originalDate); 
                     currentDay.addMonths(i*3); 
@@ -104,52 +105,9 @@ function getDateRange(options, expense) {
     return range;
 }
 
-$(document).on('change', '#recurrenceDaysSelection', () => { 
-    let selection = $("#recurrenceDaysSelection").val();  
-    
-    if (selection == 7) {
-        $("#recurrenceDaysWrap").show();
-    } else {
-        $("#recurrenceDaysWrap").hide();
-    }
+// Load subcategories for dropdown
+function loadSubcategories(cat) {
 
-    switch(selection) {
-        case '1':
-            options.hasRecurrence = false;
-            break;
-        case '2':
-            options.hasRecurrence = true;
-            options.recurrenceValue = 'W';
-            break;
-        case '3':
-            options.hasRecurrence = true;
-            options.recurrenceValue = 'LDM';
-            break;
-        case '4':
-            options.hasRecurrence = true;
-            options.recurrenceValue = 'FDM';
-            break;
-        case '5':
-            options.hasRecurrence = true;
-            options.recurrenceValue = 'M';
-            break;
-        case '6':
-            options.hasRecurrence = true;
-            options.recurrenceValue = 'Y';
-            break;
-        case '7':
-            options.hasRecurrence = true;
-            options.recurrenceValue = 'C';
-            break;
-        case '8':
-            options.hasRecurrence = true;
-            options.recurrenceValue = 'Q';
-            break;
-    }
-})
-
-$(document).on('change', '#cat', () => { 
-    let cat = $("#cat").val();  
     let subcats = categoryRelation[cat]; 
     
     let list = '';
@@ -160,50 +118,187 @@ $(document).on('change', '#cat', () => {
     $("#subcat").html(
       `<option value="" disabled selected>Choose reason of transaction</option>${list}`
     );
-})
+}
 
-$(document).on('click', "#submit", (e) => {
-    e.preventDefault();
+// Save the expense
+async function saveExpense(expense, id = null) {
+    
+    var response = null;
 
-    let expense = new Expenses(
+    if (id) { // Updating data
+        
+        // Subscription data cannot be updated
+        // So, data to be modified before save
+        let modifiedExpense = {}
+        modifiedExpense.datetime = expense.datetime; 
+        modifiedExpense.category = expense.category; 
+        modifiedExpense.subcategory = expense.subcategory; 
+        modifiedExpense.amount = expense.amount;
+        modifiedExpense.notes = expense.notes;
+
+        if (expense.recurrenceFrequency === 'OT') { // If one time transaction, recurrence can be updated
+            modifiedExpense.recurrenceFrequency = expense.recurrenceFrequency;
+            modifiedExpense.hasRecurrence = false;
+            modifiedExpense.recurrenceValue = null;
+        }
+
+        // Query for adding document  
+        const docRef = doc(db, "expenseDetail", id);
+        const data = expenseConverter.toFirestore(modifiedExpense)
+
+        response = setDoc(docRef, data);
+
+    } else {  // Add data
+       
+        // Generate data for date ranges according to frequency
+        let dateRange = getDateRange(expense); 
+        dateRange.forEach((datetime) => {
+            // Query for adding document
+            response = addDoc(collection(db, "expenseDetail"), expenseConverter.toFirestore(expense)); 
+        }); 
+    }
+
+    // Response after events
+    if (response) {
+        response.then((r) => {
+            $(".addExpenseForm form").find("input, select").val(null);
+            showSuccess('Data saved successfully!');
+        })
+    } else {
+        showError('Something went wrong');
+    }
+}
+
+async function fetchDocument(id) {
+    let ref = doc(db, "expenseDetail", id).withConverter(expenseConverter);
+    let docSnapshot = await getDoc(ref);
+    return docSnapshot.data();
+}
+
+async function removeDocument(id) {
+    let ref = doc(db, "expenseDetail", id);
+    return deleteDoc(ref);
+}
+
+// Toggle form for saving expense
+function toggleEditForm(data = null) {
+    
+    $("#deleteExpense").hide();
+
+    if ($('.ffs-btn').hasClass('open')) {
+        $(".addExpenseForm").find('input, select').val(null);
+        $(".addExpenseForm").hide();
+        $(".ffs-btn").removeClass('open');
+        $(".ffs-btn").find('.material-icons').text('add');
+        
+        loadList({});
+    } else { 
+        if (data) {
+            $("#expenseId").val(data.id);
+            $("#date").val(data.datetime);
+            $("#amount").val(data.amount);
+            $("#notes").val(data.notes);
+            $("#cat").val(data.category);
+
+            let cat = data.category;  
+            let subcats = categoryRelation[cat]; 
+            let list = '';
+            $.each(subcats, (i, val) => {
+                list += `<option value="${val}">${categoryDictionary[val]}</option>`;
+            })
+            $("#subcat").html(
+                `<option value="" disabled selected>Choose reason of transaction</option>${list}`
+            );
+
+            $("#subcat").val(data.subcategory);
+            $("#recurrenceDaysSelection").val(data.recurrenceFrequency);
+            
+            $("#recurrenceDaysWrap").hide();
+            if (data.hasRecurrence) { 
+                if (data.recurrenceFrequency === 'CD') {
+                    $("#recurrenceDaysWrap").show();
+                    $("#recurrenceDays").val(data.recurrenceValue);
+                }  
+            } else { 
+                $("#recurrenceDays").val(null);
+            }
+
+            $("#deleteExpense").show();
+        }
+
+        $(".addExpenseForm").show();
+        $(".ffs-btn").addClass('open');
+        $(".ffs-btn").find('.material-icons').text('close'); 
+    } 
+}
+
+// Get basic prepared expense
+function getPreparedExpense () {
+    return new Expenses(
         $("#date").val(), 
         $("#cat").val(),
         $("#subcat").val(),
         $("#amount").val(),
-        $("#notes").val()
+        $("#notes").val() 
     )
+}
 
-    if ( validateInputValues(expense) ) {
-        // Add recurrence logic 
-        if (options.hasRecurrence) {
-            options.recurrenceFrequency = $("#recurrenceDays").val();
-        }
-        
-        let dateRange = getDateRange(options, expense); 
+function showSuccess(msg) {
+    $(".addExpenseForm .alert").hide();
+            
+    $('.addExpenseForm .alert-success').text(msg);
+    $(".addExpenseForm .alert-success").show();
+    setTimeout(() => { $(".addExpenseForm .alert-success").hide(); }, 5000)
+}
 
-        let response = null;
-        dateRange.forEach((datetime) => {
-            // Initiate addition
-            expense.datetime = datetime;
-            response = addDoc(collection(db, "expenseDetail"), expenseConverter.toFirestore(expense)); 
-        }); 
-        if (response) {
-            response.then((r) => {
-                $(".addExpenseForm form").find("input, select").val(null);
-    
-                $(".addExpenseForm .alert").hide();
-                
-                $('.addExpenseForm .alert-success').text('Data saved successfully!');
-                $(".addExpenseForm .alert-success").show();
-                setTimeout(() => { $(".addExpenseForm .alert-success").hide(); }, 5000)
-            })
-        } else {
-            $(".addExpenseForm .alert").hide();
+function showError(msg) {
+    $(".addExpenseForm .alert").hide();
 
-            $('.addExpenseForm .alert-danger').text('Something went wrong!');
-            $(".addExpenseForm .alert-danger").show();
-            setTimeout(() => { $(".addExpenseForm .alert-danger").hide(); }, 5000)
-        }
+    $('.addExpenseForm .alert-danger').text(msg);
+    $(".addExpenseForm .alert-danger").show();
+    setTimeout(() => { $(".addExpenseForm .alert-danger").hide(); }, 5000)
+}
+
+// Change event of recurrence selection dropdown
+$(document).on('change', '#recurrenceDaysSelection', () => { 
+    let selection = $("#recurrenceDaysSelection").val();  
+    if (selection == 7) {
+        $("#recurrenceDaysWrap").show();
+    } else {
+        $("#recurrenceDaysWrap").hide();
+    }
+})
+
+// Change events of category select dropdown
+$(document).on('change', '#cat', () => { 
+    let cat = $("#cat").val();  
+
+    loadSubcategories(cat);
+})
+
+// Save Expense event
+$(document).on('click', "#submit", (e) => {
+
+    e.preventDefault();
+
+    // Prepare expense data
+    let expense = getPreparedExpense();
+    let expenseId = $("#expenseId").val();
+
+    // Adding extra parameters
+    let recurrenceFrequency = $("#recurrenceDaysSelection").val();
+    if (recurrenceFrequency !== 'OT') {
+        expense.hasRecurrence = true;
+    } else {
+        expense.hasRecurrence = false;
+    }
+
+    expense.recurrenceFrequency = $("#recurrenceDaysSelection").val(), // recurrence frequency
+    expense.recurrenceValue = $("#recurrenceDays").val() // recurrence value
+
+    // Save expense data
+    if ( validateInputValues(expense) ) { 
+        saveExpense(expense, expenseId);
     } else {
         $(".addExpenseForm .alert").hide();
 
@@ -212,4 +307,42 @@ $(document).on('click', "#submit", (e) => {
         setTimeout(() => { $(".addExpenseForm .alert-danger").hide(); }, 5000)
     }
     
+})
+
+// Open edit form
+$(document).on('click', ".subcat-row-item", function() {
+    let id = $(this).attr('data-id'); 
+
+    fetchDocument(id).then((doc) => { 
+        doc.id = id;
+        toggleEditForm(doc);
+    })
+})
+
+// Click event on + button / open edit form
+$(document).on('click', ".ffs-btn", (e) => {
+    e.preventDefault();
+    
+    toggleEditForm();
+})
+
+// Delete expense event
+$(document).on('click', "#deleteExpense", function() {
+    let id = $('#expenseId').val(); 
+
+    fetchDocument(id).then((doc) => { 
+        if (doc) {
+            if (confirm("Are you sure to delete this expense?")) {
+                removeDocument(id).then((resp) => {
+                    showSuccess('Expense has been removed');
+                }).catch((error) => { 
+                    showError("Expense cannot be deleted");
+                });
+            }
+        } else {
+            showError('No expense found.');
+        }
+    }).catch((error) => {
+        showError("Something went wrong");
+    })
 })

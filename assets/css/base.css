@@ -234,7 +234,7 @@ ul.lrd-unit-list li {
 }
 
 .footer-link-list li {
-    width: 25%;
+    width: 20%;
     text-align: center;
 }
 
@@ -248,7 +248,7 @@ ul.lrd-unit-list li {
 }
 .stats-wrap {
     padding: 8px;
-    background: #4c124c;
+    background: linear-gradient(45deg, #4c124c, #580458, #b99fa2);
     border-radius: 1em 1em 0 0;
     color: white;
 }
@@ -264,16 +264,16 @@ ul.lrd-unit-list li {
 .footer-float-section {
     position: fixed;
     width: 100%;
-    bottom: 50px;
+    bottom: 44px;
     z-index: 99;
 }
 
 a.ffs-btn {
     padding: 25px 15px 12px 15px;
-    background: darkmagenta;
+    background: linear-gradient(45deg, #4c124c, #580458, #b99fa2);
     border-radius: 2em;
     width: 55px;
-    box-shadow: 0px 0px 8px 1px grey;
+    box-shadow: 0px 0px 2px 1px grey;
     color: white;
 }
 .list-header {padding: 12px 0;font-size: 1em;color: #b3b3b3;font-weight: bold;}
@@ -306,8 +306,6 @@ a.ffs-btn {
 }
 .subcat-row li {
     padding: 10px 0;
-    border-bottom: 1px solid #d5d5d5;
-    background: #8b008b05;
 }
 .footer-section {
     position: relative;
@@ -315,10 +313,8 @@ a.ffs-btn {
 }
 .ec-1-form {
     position: fixed;
-    top: 0;
     width: 100%;
     bottom: 65px;
-    background: #565656f0;
     padding: 10px;
 }
 .ec-1-form.addExpenseForm h5 {
@@ -331,9 +327,9 @@ a.ffs-btn {
 }
 
 a.ffs-btn.open {
-    background: black;
+    background: linear-gradient(0deg, #4c124c, #580458, #b99fa2);
 }
-.addExpenseForm form {padding: 25px;background: white;border-radius: 4px;}
+.addExpenseForm form {padding: 25px;background: white;border-radius: 1em;}
 span.swt-date {
     display: block;
     padding: 2px;
@@ -366,7 +362,8 @@ span.info-badge.totalInvestment {
 
 .category-wrap {
     padding: 12px;
-    background: #520752;
+    padding-bottom: 6px;
+    background: #4c124c;
     border-top: 1px solid #2e122e;
     border-radius: 0 0 1em 1em;
 }
@@ -416,4 +413,13 @@ button#lsReset {
 
 .active.cwTotalIncome {
     border-bottom: 1px solid lightgreen;
+}
+.ec-1-form-wrapper {
+    position: fixed;
+    overflow: hidden;
+    top: 0;
+    bottom: 65px;
+    width: 100%;
+    background: #000000ad;
+    z-index: 0;
 }
