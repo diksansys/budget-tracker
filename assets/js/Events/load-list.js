@@ -1,4 +1,20 @@
 import {loadList} from '../detail.js';
+import {categoryRelation, categoryDictionary} from './../Dict/dictionary.js';
+
+// Load subcategories for dropdown
+function loadSubcategories(cat) {
+
+    let subcats = categoryRelation[cat]; 
+    
+    let list = '';
+    $.each(subcats, (i, val) => {
+      list += `<option value="${val}">${categoryDictionary[val]}</option>`;
+    })
+
+    $("#lsSubCategory").html(
+      `<option value="" disabled selected>Search By Sub Category</option>${list}`
+    );
+}
         
 // ----------------------------------EVENTS-------------------------------------------------
 var options = {}
@@ -7,13 +23,20 @@ $(document).ready(function(){
     loadList(options);
 });
 
+// Search Event
 $(document).on('click', "#lsSubmit", (e) => {
     e.preventDefault();
+
     let lsToDate = $("#lsToDate").val();
     let lsFromDate = $("#lsFromDate").val();
+    let lsCategory = $("#lsCategory").val();
+    let lsSubCategory = $("#lsSubCategory").val();
+
     if ( lsToDate && lsFromDate ) {
         options.toDate = lsToDate; 
         options.fromDate = lsFromDate;
+        options.category = lsCategory;
+        options.subCategory = lsSubCategory;
 
         loadList(options);
     } else {
@@ -24,6 +47,15 @@ $(document).on('click', "#lsSubmit", (e) => {
         setTimeout(() => { $(".form--search .alert-danger").hide(); }, 3000)
     }
 })
+
+// Reset Event
+$(document).on('click', "#lsReset", (e) => {
+    e.preventDefault();
+    $(".form--search").find('input, select').val(null);
+    options = {};
+    loadList(options);
+})
+
 $(document).on('click', "#lsCancel", (e) => {
     e.preventDefault();
     $(".search-wrap").hide();
@@ -39,12 +71,6 @@ $(document).on('click', ".tb-action", (e) => {
         $(".search-wrap").show();
         $(".tb-action").hide();
     } 
-})
-
-$(document).on('click', "#lsReset", (e) => {
-    e.preventDefault();
-    $(".form--search").find('input').val(null);
-    loadList({});
 })
 
 $(document).on('click', '.cwTotalExpense', (e) => {
@@ -88,4 +114,10 @@ $(document).on('click', '.cwTotalIncome', (e) => {
         $(".cwsbIncome").show();
     }
 });
+
+// Change events of category select dropdown
+$(document).on('change', '#lsCategory', () => { 
+    let cat = $("#lsCategory").val();  
+    loadSubcategories(cat);
+})
 

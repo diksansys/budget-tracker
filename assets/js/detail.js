@@ -1,4 +1,4 @@
-import {db, query, collection, getDocs} from './app.js';
+import {db, where, query, collection, getDocs} from './app.js';
 import {categoryRelation, categoryDictionary,colors,monthNames,iconDictionary} from './Dict/dictionary.js';
 import {expenseConverter} from './Entity/expense.js';
 
@@ -75,8 +75,23 @@ async function loadList(options = null) {
         $(".swtFromDate").text(prettyDate(options.fromDate)); 
     } 
     
-    // Init the database query
-    const q = query(collection(db, "expenseDetail").withConverter(expenseConverter));
+    let q = null;
+    if (options.category && options.subCategory === null) {
+        // Only category search initiated
+        q = query(
+            collection(db, "expenseDetail").withConverter(expenseConverter),
+            where('category', '==', options.category)
+        );
+    } else if (options.category && options.subCategory) {
+        // Sub category search initiated
+        q = query(
+            collection(db, "expenseDetail").withConverter(expenseConverter),
+            where('subcategory', '==', options.subCategory)
+        );
+    } else {
+        // No catergory search 
+        q = query(collection(db, "expenseDetail").withConverter(expenseConverter));
+    }
     const querySnapshot = await getDocs(q);
 
     // Filtration + Segregation

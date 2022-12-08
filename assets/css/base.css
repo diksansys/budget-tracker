@@ -138,7 +138,7 @@ span.unit-value {
 
 .search-wrap {
     padding: 10px;
-    background: snow;
+    background: white;
     margin-bottom: 1em;
     border: 1px solid #ccc;
     border-radius: 1em;
@@ -384,7 +384,6 @@ span.info-icon.totalInvestmentIcon {
     color: lightgreen;
 }
 .input-field {
-    margin-bottom: 8px;
 }
 button#lsCancel, button#lsReset {
     float: right;
@@ -422,4 +421,30 @@ button#lsReset {
     width: 100%;
     background: #000000ad;
     z-index: 0;
+}
+.form-input-row .input-field {
+    float: left;
+    width: 50%;
+    padding: 5px;
+}
+
+.form-input-row {
+    overflow: hidden;
+}
+span.input-label {
+    font-size: 12px;
+    color: #4c124c;
+}
+
+.btn-field {
+    padding: 5px;
+    padding-top: 18px;
+    overflow: hidden;
+}
+.btn-field .btn {
+    font-size: 12px;
+}
+
+.form-input-row .input-field input, .form-input-row .input-field select {
+    font-size: 14px;
 }
