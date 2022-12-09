@@ -1,9 +1,20 @@
 import {loadList} from '../detail.js';
 import {categoryRelation, categoryDictionary} from './../Dict/dictionary.js';
 
+Element.prototype.hasClass = function(className) {
+    return this.className && new RegExp("(^|\\s)" + className + "(\\s|$)").test(this.className);
+};
+
+Element.prototype.removeClass = function(className) {
+    this.classList.remove(className);
+}
+
+Element.prototype.addClass = function(className) {
+    this.classList.add(className);
+}
+
 // Load subcategories for dropdown
 function loadSubcategories(cat) {
-
     let subcats = categoryRelation[cat]; 
     
     let list = '';
@@ -14,6 +25,24 @@ function loadSubcategories(cat) {
     $("#lsSubCategory").html(
       `<option value="" disabled selected>Search By Sub Category</option>${list}`
     );
+}
+
+function hideSearchWrap() {
+    $('.tb-action').removeClass('active');
+    $(".search-wrap").hide();
+    $(".tb-action span").text('filter_list');
+}
+
+function openSearchWrap() {
+    $('.tb-action').addClass('active');
+    $(".search-wrap").show();
+    $(".tb-action span").text('close');
+}
+
+function refresh() {
+    $(".form--search").find('input, select').val(null);
+    options = {};
+    loadList(options);
 }
         
 // ----------------------------------EVENTS-------------------------------------------------
@@ -37,7 +66,7 @@ $(document).on('click', "#lsSubmit", (e) => {
         options.fromDate = lsFromDate;
         options.category = lsCategory;
         options.subCategory = lsSubCategory;
-
+        
         loadList(options);
     } else {
         $(".form--search .alert").hide();
@@ -48,28 +77,34 @@ $(document).on('click', "#lsSubmit", (e) => {
     }
 })
 
-// Reset Event
-$(document).on('click', "#lsReset", (e) => {
-    e.preventDefault();
-    $(".form--search").find('input, select').val(null);
-    options = {};
+//Click event on repeating badge
+$(document).on('click', ".variable-badge", (e) => {
+    let target = e.currentTarget;
+    if (target.hasClass('active')) {
+        target.removeClass('active');
+        options.notes = undefined;
+    } else {
+        target.addClass('active');
+        options.notes = target.getAttribute('data-title'); 
+    } 
     loadList(options);
 })
 
+// Reset Event
+$(document).on('click', "#lsReset, .tb-reset", (e) => {
+    refresh();
+})
+
 $(document).on('click', "#lsCancel", (e) => {
-    e.preventDefault();
-    $(".search-wrap").hide();
-    $(".tb-action").show();
+    hideSearchWrap();
 })
 
 $(document).on('click', ".tb-action", (e) => {
-    e.preventDefault();
-    if ($('.search-wrap').hasClass('active')) {
-        $(".search-wrap").hide();
-        $(".tb-action").show();
-    } else {
-        $(".search-wrap").show();
-        $(".tb-action").hide();
+    let target = e.currentTarget;
+    if (target.hasClass('active')) {
+        hideSearchWrap();
+    } else { 
+        openSearchWrap();
     } 
 })
 

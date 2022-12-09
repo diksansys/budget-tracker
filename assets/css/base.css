@@ -248,8 +248,6 @@ ul.lrd-unit-list li {
 }
 .stats-wrap {
     padding: 8px;
-    background: linear-gradient(45deg, #4c124c, #580458, #b99fa2);
-    border-radius: 1em 1em 0 0;
     color: white;
 }
 
@@ -363,9 +361,6 @@ span.info-badge.totalInvestment {
 .category-wrap {
     padding: 12px;
     padding-bottom: 6px;
-    background: #4c124c;
-    border-top: 1px solid #2e122e;
-    border-radius: 0 0 1em 1em;
 }
 
 span.info-badge.totalIncome {color: lightgreen;}
@@ -447,4 +442,45 @@ span.input-label {
 
 .form-input-row .input-field input, .form-input-row .input-field select {
     font-size: 14px;
+}
+
+.swt-info-unit {
+    float: right;
+    padding: 4px;
+    color: yellow;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.info-wrap {
+    overflow: hidden;
+    padding: 0 12px;
+    text-transform: uppercase;
+    background: #00000012;
+}
+
+.overview-section {
+    background: linear-gradient(45deg, #4c124c, #580458, #b99fa2);
+    border-radius: 1em;
+}
+.swt-info-unit.unit-2 {
+    color: magenta;
+}
+.badge.variable-badge {
+    padding: 8px;
+    border: 1px solid #4c124c;
+    border-radius: 1em;
+}
+.tb-action, .tb-reset {
+    float: right;
+    margin: 6px;
+    margin-top: 10px;
+    margin-bottom: 0;
+    padding: 6px;
+    padding-bottom: 0;
+}
+.active.badge.variable-badge {
+    background: #4c124c;
+    color: white;
+    border: 1px solid black;
 }

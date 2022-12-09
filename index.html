@@ -27,12 +27,19 @@
                         <div class="tb-welcome col-4">
                             <span>Hello</span><span class="tbw-user-name">User</span>
                         </div>
-                        <div class="tb-action col-8 text-right">
-                            <span class="material-icons">search</span>
+                        <div class="col-8">
+                            <div class="tb-action">
+                                <span class="material-icons">filter_list</span>
+                            </div> 
+                            <div class="tb-reset">
+                                <span class="material-icons">sync</span>
+                            </div> 
                         </div>
                     </div>
                     <div class="search-wrap" style="display:none;">  
                         <form class="form--search">  
+                            <div class="alert alert-success" role="alert" style="display:none"></div>
+                            <div class="alert alert-danger" role="alert" style="display:none"></div>
                             <div class="form-input-row"> 
                                 <div class="input-field">
                                     <span class="input-label">From Date*</span>
@@ -61,9 +68,9 @@
                                     </select> 
                                 </div>
                                 <div class="btn-field">
-                                    <button class="btn btn-success" id="lsSubmit" type="button" name="action">Search</button>
-                                    <button class="btn btn-info" id="lsReset" type="button" name="action">Reset</button>
-                                    <button class="btn btn-dark" id="lsCancel" type="button" name="action">Close</button>
+                                    <button class="btn btn-outline-success" id="lsSubmit" type="button" name="action">Search</button>
+                                    <button class="btn btn-outline-dark" id="lsReset" type="button" name="action">Reset</button>
+                                    <button class="btn btn-outline-secondary" id="lsCancel" type="button" name="action">Close</button>
                                 </div>
                             </div>  
                         </form>
@@ -75,7 +82,7 @@
                             <div class="swt-title col-8">
                                 <div class="swt-title-text"><span>Balance</span></div>
                                 <div class="swt-title-body"><span>--</span></div>
-                            </div>
+                            </div> 
                             <div class="swt-action col-4 text-right">
                                 <div class="swt-action-icons"> 
                                     <div class="swt-date-range">
@@ -90,6 +97,9 @@
                                 <div id="myChart"></div> 
                             </div>  
                         </div>
+                    </div>
+                    <div class="info-wrap">
+                        <!--TO BE FETCHED-->>
                     </div>
                     <div class="category-wrap">
                         <div class="cw-content row">
@@ -120,10 +130,15 @@
                     </div>
                 </div>
                 <div class="list-section"> 
+                    <div class="badge-wrap">
+                        <div class="ext-badge-section">
+                            <!-- TO BE FETCHED -->
+                        </div> 
+                    </div>
                     <div class="list-wrap">
                         <div class="list-content">
                             <ul class="list-unstyled cat-row">
-                                
+                                <!--- TO BE FETCHED  -->
                             </ul> 
                         </div>
                     </div>

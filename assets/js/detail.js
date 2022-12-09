@@ -54,6 +54,23 @@ var prettyDate = ((date) => {
     return day + ' ' + month + ' ' + year;
 });
 
+function showCatInfo(options) {
+    if (options.category) {
+        if (options.subCategory) {
+            $(".info-wrap").html(`
+                <div class="swt-info-unit unit-1"><span>${ categoryDictionary[options.category] }</span></div>
+                <div class="swt-info-unit unit-2"><span>${ categoryDictionary[options.subCategory] }</span></div>
+            `); 
+        } else {
+            $(".info-wrap").html(`
+                <div class="swt-info-unit unit-1"><span>${ categoryDictionary[options.category] }</span></div> 
+            `); 
+        }
+    } else {
+        $(".info-wrap").html('');
+    }
+}
+
 // Load all the lists 
 async function loadList(options = null) {
 
@@ -74,7 +91,10 @@ async function loadList(options = null) {
     if (options.fromDate) {
         $(".swtFromDate").text(prettyDate(options.fromDate)); 
     } 
-    
+
+    // Show cat info
+    showCatInfo(options);
+
     let q = null;
     if (options.category && options.subCategory === null) {
         // Only category search initiated
@@ -82,16 +102,37 @@ async function loadList(options = null) {
             collection(db, "expenseDetail").withConverter(expenseConverter),
             where('category', '==', options.category)
         );
+        if (options.notes) { // if notes search added
+            q = query(
+                collection(db, "expenseDetail").withConverter(expenseConverter),
+                where('category', '==', options.category),
+                where('notes', '==', options.notes)
+            );
+        } 
     } else if (options.category && options.subCategory) {
         // Sub category search initiated
         q = query(
             collection(db, "expenseDetail").withConverter(expenseConverter),
             where('subcategory', '==', options.subCategory)
         );
+        if (options.notes) { // if notes search added
+            q = query(
+                collection(db, "expenseDetail").withConverter(expenseConverter),
+                where('subcategory', '==', options.subCategory),
+                where('notes', '==', options.notes)
+            );
+        } 
     } else {
         // No catergory search 
         q = query(collection(db, "expenseDetail").withConverter(expenseConverter));
+        if (options.notes) { // if notes search added
+            q = query(
+                collection(db, "expenseDetail").withConverter(expenseConverter), 
+                where('notes', '==', options.notes)
+            );
+        } 
     }
+
     const querySnapshot = await getDocs(q);
 
     // Filtration + Segregation
@@ -118,7 +159,7 @@ async function loadList(options = null) {
             if (!modList.hasOwnProperty(gD)) {
                 modList[gD] = [] 
             } 
-            modList[gD].push(data);
+            modList[gD].push(data); 
         }  
     });
 
@@ -131,6 +172,8 @@ async function loadList(options = null) {
     }); 
 
     // Calculation
+    let checkRepeatingBadges = [];
+    let repeatingBadges = [];
     let totalBalance = 0;
     let totalExpense = 0;
     let totalInvestment = 0;
@@ -152,6 +195,16 @@ async function loadList(options = null) {
         let dailySubCatTotal = {"GRO" : 0,"MED" : 0,"REC" : 0,"SHO" : 0,"OTT" : 0,"EXP" : 0,"TBJ" : 0,"TOD" : 0,"CRY" : 0,"PPF" : 0,"EIN" : 0,"SAL" : 0,"ESL" :0 };
                 
         expenseGroup.forEach((expense) => {
+
+            // Adding repeating badges
+            if (checkRepeatingBadges.includes(expense.notes)) {
+                if (!repeatingBadges.includes(expense.notes)) {
+                    repeatingBadges.push(expense.notes);
+                } 
+            } else {
+                checkRepeatingBadges.push(expense.notes);
+            }
+
             let amount = Number(expense.amount);
             
             // Daily statistics
@@ -269,6 +322,20 @@ async function loadList(options = null) {
     $(".cwsbInvestment").html(subcatInvestList);
     $(".cwsbIncome").html(subcatIncomeList);
 
+    // Push repeating badges
+    let badgeList = '';
+    repeatingBadges.forEach((note) => {
+        let activeClass = '';
+        if (options.notes && options.notes === note) {
+            activeClass = 'active';
+        }
+        badgeList += `
+            <div class="badge variable-badge ${activeClass}" data-title="${note}">
+                <span>${note}</span>
+            </div>
+        `;
+    })
+    $(".ext-badge-section").html(badgeList);
 }
 
 export {loadList};
