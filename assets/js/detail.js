@@ -1,5 +1,5 @@
 import {db, where, query, collection, getDocs} from './app.js';
-import {categoryRelation, categoryDictionary,colors,monthNames,iconDictionary} from './Dict/dictionary.js';
+import {categoryRelation, categoryDictionary,monthNames,iconDictionary} from './Dict/dictionary.js';
 import {expenseConverter} from './Entity/expense.js';
 
 // ------------------------------------INIT---------------------------------------------------------------
@@ -71,8 +71,34 @@ function showCatInfo(options) {
     }
 }
 
+async function authenticate() {
+    let loginToken = getCookie('loggedInUser');
+    if (loginToken) { // If login token exist
+        let q = query(
+            collection(db, "allowedUsers").withConverter(userConverter), 
+            where('loginToken', '==', loginToken), 
+            where('isLoggedIn', '==', true)
+        );
+        const querySnapshot = await getDocs(q); 
+        querySnapshot.forEach((resp) => { 
+            if (resp) { 
+                // Already logged in
+                console.log('user logged in ))'); 
+            } else {
+                // Unknown / hack request
+                eraseCookie('loggedInUser');
+                alert('Access Denied!');
+                location.href="login.html";
+            }
+        });
+    } else { // Follow usual flow
+        location.href="login.html";
+    } 
+}
+
 // Load all the lists 
 async function loadList(options = null) {
+    //authenticate();
 
     var today = new Date(); 
     if (options.toDate === undefined || options.toDate === null) { // If no date provided, use last date of last month 

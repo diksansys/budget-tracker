@@ -340,12 +340,11 @@ span.swt-date {
     font-weight: bold;
 }
 span.tbw-user-name {padding: 8px;color: darkred;}
-.cw-content.row {
-    text-align: center;
-}
+.cw-content.row {}
 
 .info-badge {
-    padding: 10px;
+    padding: 0;
+    padding-left: 4px;
     font-weight: bold;
     font-size: 14px;
 }
@@ -360,13 +359,10 @@ span.info-badge.totalInvestment {
 
 .category-wrap {
     padding: 12px;
-    padding-bottom: 6px;
 }
 
 span.info-badge.totalIncome {color: lightgreen;}
-span.info-icon {
-    float: left;
-}
+.cwsb-unit span.info-icon {}
 .totalExpenseIcon {
     color: red;
 }
@@ -389,6 +385,7 @@ button#lsReset {
 .info-group {
     float: left;
     width: 33%;
+    display: flex;
 }
 
 .cwsb-unit {
@@ -483,4 +480,46 @@ span.input-label {
     background: #4c124c;
     color: white;
     border: 1px solid black;
+}
+.cw-content .col {display: flex;}
+
+.info-icon i.material-icons {
+    font-size: 18px;
+}
+.login-wrapper {
+    overflow: hidden;
+}
+.login-container {
+    position: fixed;
+    top: 55px;
+    bottom: 0;
+    width: 100%;
+    background: linear-gradient(45deg, #4c124c, #580458, #b99fa2);
+}
+
+div#loginBtnSection {
+    padding: 12px;
+    text-align: center;
+    text-align: -webkit-center;
+}
+.image-section img {
+    width: 12em;
+}
+
+.image-section {
+    text-align: center;
+    padding: 12px;
+    margin-top: 2em;
+}
+.text-section {
+    padding: 12px;
+    margin-top: 1em;
+}
+
+.text-section span {display: block;text-align: center;color: lawngreen;}
+
+.text-section span:first-child {
+    font-size: 18px;
+    color: white;
+    text-transform: uppercase;
 }
