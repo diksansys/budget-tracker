@@ -108,6 +108,12 @@ $(document).on('click', ".tb-action", (e) => {
     } 
 })
 
+$(document).on('change', '#swssSort', () => { 
+    let sortValue = $("#swssSort").val();  
+    options.sortValue = sortValue; 
+    loadList(options);
+})
+
 $(document).on('click', '.cwTotalExpense', (e) => {
     e.preventDefault();
 
@@ -155,4 +161,5 @@ $(document).on('change', '#lsCategory', () => {
     let cat = $("#lsCategory").val();  
     loadSubcategories(cat);
 })
+
 

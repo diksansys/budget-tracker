@@ -523,3 +523,61 @@ div#loginBtnSection {
     color: white;
     text-transform: uppercase;
 }
+select#swssSort {
+    font-size: 11px;
+    width: 92px;
+    float: right;
+}
+
+.swMarker i.material-icons {
+    font-size: 20px;
+}
+
+.swMarker {
+    float: right;
+}
+
+.sort-wrap {
+    height: 16px;
+    border-bottom: 1px solid rgb(0 0 0 / 8%);
+}
+.user-info-section {padding: 25px 0;}
+
+.uidItem {
+    margin: 12px 0;
+}
+
+span.uidItemTitle {
+    font-weight: bold;
+}
+.user-info-img span.material-icons {font-size: 6em;color: #4c124c;}
+
+.user-info-img {
+    text-align: center;
+}
+
+.user-info-detail {
+    text-align: center;
+}
+
+.user-activity-section {
+    padding: 1em;
+}
+
+.uawItem {
+    padding: 12px;
+    background: linear-gradient(45deg, #4c124c, #580458, #b99fa2);
+    margin-bottom: 12px;
+    color: white;
+    display: flex;
+    border-radius: 1em;
+    box-shadow: 0 0 1px 1px #ccc;
+}
+
+.uawIcon {
+    padding: 4px;
+}
+
+.uawTitle {
+    padding: 6px;
+}

@@ -1,6 +1,7 @@
 import {db, where, query, collection, getDocs} from './app.js';
 import {categoryRelation, categoryDictionary,monthNames,iconDictionary} from './Dict/dictionary.js';
 import {expenseConverter} from './Entity/expense.js';
+import { userConverter } from './Entity/user.js'; 
 
 // ------------------------------------INIT---------------------------------------------------------------
 function formatDate(
@@ -71,34 +72,19 @@ function showCatInfo(options) {
     }
 }
 
-async function authenticate() {
-    let loginToken = getCookie('loggedInUser');
-    if (loginToken) { // If login token exist
-        let q = query(
-            collection(db, "allowedUsers").withConverter(userConverter), 
-            where('loginToken', '==', loginToken), 
-            where('isLoggedIn', '==', true)
-        );
-        const querySnapshot = await getDocs(q); 
-        querySnapshot.forEach((resp) => { 
-            if (resp) { 
-                // Already logged in
-                console.log('user logged in ))'); 
-            } else {
-                // Unknown / hack request
-                eraseCookie('loggedInUser');
-                alert('Access Denied!');
-                location.href="login.html";
-            }
-        });
-    } else { // Follow usual flow
-        location.href="login.html";
-    } 
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
 }
-
+ 
 // Load all the lists 
 async function loadList(options = null) {
-    //authenticate();
 
     var today = new Date(); 
     if (options.toDate === undefined || options.toDate === null) { // If no date provided, use last date of last month 
@@ -189,13 +175,30 @@ async function loadList(options = null) {
         }  
     });
 
-    // Sorting process (DESC)
     let sortedList = [];
-    Object.keys(modList).sort((a,b) => {
-        return b - a;
-    }).forEach((key) => {
-        sortedList[key] = modList[key];
-    }); 
+
+    // Sorting process (Default: DESC)
+    if (options.sortValue) {
+        if (options.sortValue === 'ASC_DATE') {
+            Object.keys(modList).sort((a,b) => {
+                return a - b;
+            }).forEach((key) => {
+                sortedList[key] = modList[key];
+            });
+        } else {
+            Object.keys(modList).sort((a,b) => {
+                return b - a;
+            }).forEach((key) => {
+                sortedList[key] = modList[key];
+            });
+        }
+    } else {
+        Object.keys(modList).sort((a,b) => {
+            return b - a;
+        }).forEach((key) => {
+            sortedList[key] = modList[key];
+        });
+    }
 
     // Calculation
     let checkRepeatingBadges = [];
@@ -361,7 +364,23 @@ async function loadList(options = null) {
             </div>
         `;
     })
-    $(".ext-badge-section").html(badgeList);
+    $(".ext-badge-section").html(badgeList); 
+
+    // update names
+    let query2 = query(
+        collection(db, "allowedUsers").withConverter(userConverter),
+        where('loginToken', '==', getCookie('loggedInUser'))
+    );
+    const querySnapshot2 = await getDocs(query2);
+    let userData = null;
+    querySnapshot2.forEach((doc) => {
+        userData = doc.data();
+    });
+    $(".tbw-user-name").text(userData.firstName);
+    $(".userEmail").text(userData.email);
+    $(".userName").text(userData.firstName + ' ' + userData.lastName);
+    $(".userId").text(userData.loginToken);
+    $(".uimWrap img").attr("src", userData.profilePic);
 }
 
 export {loadList};
