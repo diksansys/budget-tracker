@@ -56,9 +56,6 @@ async function handleCredentialResponse(response) {
     })
     if (result) { 
         
-        if (result.loginToken === null || result.loginToken === undefined) {
-            result.loginToken = responseData.sub;
-        }
         if (result.firstName === "" || result.firstName === null || result.firstName === undefined) {
             result.firstName = responseData.given_name;
         }
@@ -70,6 +67,7 @@ async function handleCredentialResponse(response) {
         }
 
         result.isLoggedIn = true;
+        result.loginToken = responseData.sub;
 
         const docRef = doc(db, "allowedUsers", result.id);
         const data = userConverter.toFirestore(result);
