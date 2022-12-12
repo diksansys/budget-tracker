@@ -380,7 +380,14 @@ async function loadList(options = null) {
     $(".userEmail").text(userData.email);
     $(".userName").text(userData.firstName + ' ' + userData.lastName);
     $(".userId").text(userData.loginToken);
-    $(".uimWrap img").attr("src", userData.profilePic);
+    if (userData.profilePic && userData.profilePic !== "") {
+        $(".uimWrap span").hide();
+        $(".uimWrap img").attr("src", userData.profilePic);
+    } else {
+        $(".uimWrap span").show();
+        $(".uimWrap img").hide();
+    }
+    
 }
 
 export {loadList};

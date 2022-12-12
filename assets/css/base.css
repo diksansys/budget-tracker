@@ -234,7 +234,7 @@ ul.lrd-unit-list li {
 }
 
 .footer-link-list li {
-    width: 20%;
+    width: 25%;
     text-align: center;
 }
 
@@ -262,7 +262,7 @@ ul.lrd-unit-list li {
 .footer-float-section {
     position: fixed;
     width: 100%;
-    bottom: 44px;
+    bottom: 50px;
     z-index: 99;
 }
 
@@ -307,7 +307,7 @@ a.ffs-btn {
 }
 .footer-section {
     position: relative;
-    height: 80px;
+    height: 85px;
 }
 .ec-1-form {
     position: fixed;
@@ -580,4 +580,12 @@ span.uidItemTitle {
 
 .uawTitle {
     padding: 6px;
+}
+.uimWrap img {
+    border-radius: 3em;
+}
+.uidAction button, .uidAction i {font-size: 14px;}
+
+.uidAction button {
+    margin: 0 20px;
 }
