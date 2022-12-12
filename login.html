@@ -41,39 +41,6 @@
         </div>
     </body>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
-    <script>
-        $(document).ready(() => {
-            var settings = {
-                "url": "https://data.mongodb-api.com/app/data-pegax/endpoint/data/v1/action/insertOne",
-                "method": "POST",
-                "timeout": 0,
-                "headers": {
-                    "Content-Type": "application/json",
-                    "Access-Control-Request-Headers": "*",
-                    "api-key": "1d2gp6t8lemI6yLfMQH2koJOgmOQXCzXELBLcFnRgfZORuP4fSJ13mZ5LlVdkrCb"
-                },
-                "data": JSON.stringify({
-                    "collection": "expenseDetail",
-                    "database": "budgetTracker",
-                    "dataSource": "Cluster0",
-                    "document": {
-                    "amount": "703",
-                    "category": "VEX",
-                    "datetime": "2022-12-06",
-                    "hasRecurrence": false,
-                    "notes": "amazon items",
-                    "recurrenceFrequency": "OT",
-                    "recurrenceValue": null,
-                    "subCategory": "GRO"
-                    }
-                }),
-            };
-
-            $.ajax(settings).done(function (response) {
-                console.log(response);
-            });
-        })
-    </script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script type="module" src="assets/js/Events/login.js"></script>
 </html>
