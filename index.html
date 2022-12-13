@@ -21,7 +21,7 @@
                     </div>  
                 </div>  
             </div> 
-            <div class="main-section container"> 
+            <div class="main-section main-page container"> 
                 <div class="top-bar-section">
                     <div class="top-bar-wrap row align-items-center">
                         <div class="tb-welcome col-4">
@@ -153,7 +153,7 @@
                     </div>
                 </div>
             </div>
-            <div class="user-section container" style="display:none">
+            <div class="user-section main-page container" style="display:none">
                 <div class="user-info-section">
                     <div class="user-info-img">
                         <div class="uimWrap">
@@ -172,6 +172,167 @@
                             <button class="btn btn-danger uidLogoutBtn"><i class="material-icons">logout</i> Logout</button>
                         </div>
                     </div> 
+                </div>
+            </div>
+            <div class="payroll-section main-page container" style="display:none"> 
+                <div class="ps-content-section">
+                    <div class="ps-content-wrap">
+                        <div class="pscw-list">
+                            <h5>Manage Salary & Predictions</h5>
+                            <div class="pscw-item ctcInfoWrap">
+                                <div class="pscw-detail-header ctcDetailTitle">
+                                    <div class="pscw icon"><i class="material-icons">request_quote</i></div>
+                                    <div class="pscw-content">
+                                        <span>CTC Details</span>
+                                    </div>
+                                </div>
+                                <div class="pscw-detail-item ctcDetailForm" style="display:none"> 
+                                    <div class="pscw-detail-overview">
+                                        <div class="pdo-wrap">
+                                            <div class="pdo-unit">
+                                                <span class="pdo-title">Gross Income (Total): </span>
+                                                <span class="pdo-content grossIncome">1232345</span>
+                                            </div>
+                                            <div class="pdo-unit">
+                                                <span class="pdo-title">Total Earning (Calc.): </span>
+                                                <span class="pdo-content totalEarningCalc">---</span>
+                                            </div>
+                                            <div class="pdo-unit">
+                                                <span class="pdo-title">Total Earning (Basic): </span>
+                                                <span class="pdo-content totalEarningBasic">1232345</span>
+                                            </div>
+                                            <div class="pdo-unit">
+                                                <span class="pdo-title">Total Deduction (Calc.): </span>
+                                                <span class="pdo-content totalDeductionCalc">1232345</span>
+                                            </div>
+                                            <div class="pdo-unit">
+                                                <span class="pdo-title">Total Earning (In Hand): </span>
+                                                <span class="pdo-content totalEarningInHand">---</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <form>  
+                                        <input type="hidden" id="payrollId">
+                                        <div class="groupInput"> 
+                                            <h5>Income Detail</h5>
+                                            <div class="form-group pscw-unit"> 
+                                                <label for="pscwPayBasic">Basic Pay</label>
+                                                <input placeholder="Basic" id="pscwPayBasic" type="number" class="form-control" required>
+                                            </div>
+                                            <div class="form-group pscw-unit"> 
+                                                <label for="pscwPayHRA">HR Allowance</label>
+                                                <input placeholder="HR Allowance" id="pscwPayHRA" type="number" class="form-control" required>
+                                            </div>
+                                            <div class="form-group pscw-unit"> 
+                                                <label for="pscwPayHRA">Executive Allowance</label>
+                                                <input placeholder="Executive Allowance" id="pscwPayEA" type="number" class="form-control" required>
+                                            </div>
+                                        </div>
+                                        <div class="groupInput"> 
+                                            <h5>Deduction Detail</h5>
+                                            <div class="form-group pscw-unit"> 
+                                                <label for="pscwPayPF1">Provident Fund (For Company)</label>
+                                                <input placeholder="Provident Fund (Comp.)" id="pscwPayPF1" type="number" class="form-control" required>
+                                            </div>
+                                            <div class="form-group pscw-unit"> 
+                                                <label for="pscwPayPF2">Provident Fund (For Self)</label>
+                                                <input placeholder="Provident Fund (Self)" id="pscwPayPF2" type="number" class="form-control" required>
+                                            </div>
+                                            <div class="form-group pscw-unit"> 
+                                                <label for="pscwPayLWF1">Labour Welfare Fund (Comp.)</label>
+                                                <input placeholder="Labour Welfare Fund (Comp.)" id="pscwPayLWF1" type="number" class="form-control" required>
+                                            </div>
+                                            <div class="form-group pscw-unit"> 
+                                                <label for="pscwPayLWF2">Labour Welfare Fund (Self)</label>
+                                                <input placeholder="Labour Welfare Fund (Self)" id="pscwPayLWF2" type="number" class="form-control" required>
+                                            </div>
+                                            <div class="form-group pscw-unit"> 
+                                                <label for="pscwPayGratuity">Gratuity</label>
+                                                <input placeholder="Gratuity (Comp.)" id="pscwPayGratuity" type="number" class="form-control" required>
+                                            </div>
+                                        </div> 
+                                        <div class="groupInput"> 
+                                            <h5>Insurance Detail</h5>
+                                            <div class="form-group pscw-unit"> 
+                                                <label for="pscwPayGIPremium">Premium Amount</label>
+                                                <input placeholder="Group Insurance Premium" id="pscwPayGIPremium" type="number" class="form-control" >
+                                            </div>
+                                            <div class="form-group pscw-unit">
+                                                <label for="pscwPayGIPremiumFrequency">Premium Frequency</label>
+                                                <select name="" id="pscwPayGIPremiumFrequency" class="form-control">
+                                                    <option value="">Select Frequency</option>
+                                                    <option value="NO">None</option>
+                                                    <option value="O">Yearly</option>
+                                                    <option value="M">Monthly</option>
+                                                    <option value="Q">Quarterly</option>
+                                                </select> 
+                                            </div>
+                                            <div class="form-group pscw-unit"> 
+                                                <label for="pscwPayGIPremiumDate">Premium Date</label>
+                                                <input placeholder="Date" id="pscwPayGIPremiumDate" type="date" class="datepicker form-control">
+                                            </div>
+                                        </div> 
+                                        <div class="groupInput"> 
+                                            <h5>Bonus Details</h5>
+                                            <div class="form-group pscw-unit"> 
+                                                <label for="pscwPayBonusAmount">Bonus Amount (If Applicable)</label>
+                                                <input placeholder="Bonus Amount" id="pscwPayBonusAmount" type="number" class="form-control">
+                                            </div>
+                                            <div class="form-group pscw-unit">
+                                                <label for="pscwPayBonusFrequency">Bonus Accumulation Frequency</label>
+                                                <select name="" id="pscwPayBonusFrequency" class="form-control">
+                                                    <option value="">Select Frequency</option>
+                                                    <option value="NO">None</option>
+                                                    <option value="O">Yearly</option>
+                                                    <option value="M">Monthly</option>
+                                                    <option value="Q">Quarterly</option>
+                                                </select> 
+                                            </div>
+                                            <div class="form-group pscw-unit"> 
+                                                <label for="pscwPayBonusDate">Bonus Start Date</label>
+                                                <input placeholder="Date" id="pscwPayBonusDate" type="date" class="datepicker form-control">
+                                            </div>
+                                            <div class="form-group pscw-unit"> 
+                                                <label for="pscwPayBonusDelay">Bonus Disbursal Delay (In Months)</label>
+                                                <input placeholder="Bonus Disbursal Delay" id="pscwPayBonusDelay" type="number" class="form-control">
+                                            </div>
+                                        </div> 
+                                        <div class="groupInput"> 
+                                            <h5>Tax Regime</h5> 
+                                            <div class="form-group pscw-unit">
+                                                <select name="" id="pscwTaxRegime" class="form-control">
+                                                    <option value="">Select Regime</option>
+                                                    <option value="N">New Regime</option>
+                                                    <option value="O">Old Regime</option> 
+                                                </select>
+                                            </div>
+                                        </div> 
+                                        <div class="form-group pscw-unit">
+                                          <button class="btn btn-info" id="savePayInfo" type="button" >Save </button>  
+                                        </div>
+                                        <div class="alert alert-success" role="alert" style="display:none"></div>
+                                        <div class="alert alert-danger" role="alert" style="display:none"></div>
+                                    </form>
+                                </div>
+                            </div> 
+                            <div class="pscw-item leaveBalance"> 
+                                <div class="pscw-detail-header leaveBalanceTitle">
+                                    <div class="pscw icon"><i class="material-icons">login</i></div>
+                                    <div class="pscw-content">
+                                        <span>Leave Balance</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pscw-item salaryPrediction"> 
+                                <div class="pscw-detail-header salaryPredictionTitle">
+                                    <div class="pscw icon"><i class="material-icons">batch_prediction</i></div>
+                                    <div class="pscw-content">
+                                        <span>Salary Predictions</span>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div> 
+                    </div>
                 </div>
             </div>
         </div>
@@ -259,11 +420,10 @@
                         <input placeholder="Enter number of recurrence days" id="recurrenceDays" type="number" class="validate form-control" required>
                       </div>
                     <div class="form-group fw-unit">
-                      <button class="btn btn-info" id="submit" type="button" >Save </button>
-                      <button class="btn btn-info" id="closeForm" type="button" >Save </button>
+                      <button class="btn btn-info" id="submit" type="button" >Save </button> 
                       <button class="btn btn-danger" id="deleteExpense" type="button" style="float:right;display:none;">Delete </button>
                     </div>
-                  </form>
+                </form>
             </div>
         </div> 
     </div>
@@ -318,5 +478,6 @@
     <script type="module" src="./assets/js/Events/add-transaction.js"></script> 
     <script type="module" src="./assets/js/Events/navigation.js"></script> 
     <script type="module" src="./assets/js/Events/user-profile.js"></script> 
+    <script type="module" src="./assets/js/Events/payroll.js"></script>
   </body>
 </html>

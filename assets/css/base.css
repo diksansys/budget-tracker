@@ -589,3 +589,66 @@ span.uidItemTitle {
 .uidAction button {
     margin: 0 20px;
 }
+
+.pscw-list {
+    padding: 20px 0;
+}
+
+.ctcDetails {
+    display: flex;
+    background: linear-gradient(45deg, #4c124c, #580458, #b99fa2);
+    margin: 20px 0;
+    color: white;
+    padding: 25px;
+    border-radius: 1em;
+    font-size: 16px;
+}
+
+.pscw-content {margin-left: 1em;}
+.pscw-list h5 {
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    padding: 20px 0;
+    text-transform: uppercase;
+}
+
+.pscw-detail-header {
+    background: white;
+    color: black;
+    padding: 20px;
+    font-weight: bold;
+    font-size: 14px;
+    display: flex;
+    margin: 12px 0;
+    margin-bottom: 0;
+    border: 1px solid black;
+}
+
+.pscw-detail-header .active {
+    background: linear-gradient(45deg, #4c124c, #580458, #b99fa2);
+}
+
+.pscw-detail-header.active {
+    background: black;
+    color: white;
+}
+
+.pscw-detail-item {
+    padding: 20px;
+    background: #58045808;
+}
+
+span.pdo-title {
+    font-weight: bold;
+}
+span.pdo-content {
+    float: right;
+}
+
+.pdo-wrap {
+    padding: 20px 10px;
+    background: #5804580f;
+    border-radius: 1em;
+    font-size: 14px;
+}
