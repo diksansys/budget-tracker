@@ -1,60 +1,82 @@
 import {where, query, db, deleteDoc, getDocs, getDoc, doc, setDoc, addDoc, collection} from '../app.js';
-import {categoryRelation, categoryDictionary,monthNames,iconDictionary} from '../Dict/dictionary.js';
 import {payrollConverter} from '../Entity/payroll.js'; 
+import {categoryRelation, categoryDictionary, monthNames} from '../Dict/dictionary.js';
 
-async function loadDataToForm() {
-    var data = {};
+async function loadDataToForm(date) {
+    
+    var payrollList = [];
     let q = query(collection(db, "payrollInformation").withConverter(payrollConverter));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => { 
-        data = doc.data(); 
+        let data = doc.data(); 
         data.id = doc.id;
+        payrollList.push(data);
     });
 
-    $("#payrollId").val(data.id);
-    $("#pscwPayBasic").val(data.basicPay);
-    $("#pscwPayHRA").val(data.hrAllowance);
-    $("#pscwPayEA").val(data.executiveAllowance);
-    $("#pscwPayPF1").val(data.providentFundComp);
-    $("#pscwPayPF2").val(data.providentFundSelf);
-    $("#pscwPayLWF1").val(data.lwfComp);
-    $("#pscwPayLWF2").val(data.lwfSelf);
-    $("#pscwPayGratuity").val(data.gratuityComp);
-    $("#pscwPayGIPremium").val(data.groupInsuranceAmount);
-    $("#pscwPayGIPremiumFrequency").val(data.groupInsuranceFreq);
-    $("#pscwPayGIPremiumDate").val(data.groupInsuranceDate);
-    $("#pscwPayBonusAmount").val(data.bonusAmount);
-    $("#pscwPayBonusFrequency").val(data.bonusFreq);
-    $("#pscwPayBonusDate").val(data.bonusDate);
-    $("#pscwPayBonusDelay").val(data.bonusDelay);
-    $("#pscwTaxRegime").val(data.taxRegime); 
+    let requiredPayroll = null;
+    payrollList.forEach((payroll) => {
+        let startDateTime = payroll.payrollStartDate ?  Date.parse(payroll.payrollStartDate) : 0;
+        let endDateTime = payroll.payrollEndDate ?  Date.parse(payroll.payrollEndDate) : Infinity;
 
-    // Calculations
-    const basicIncome = Number(data.basicPay) + Number(data.hrAllowance) + Number(data.executiveAllowance);
-    const initialAddition = Number(data.providentFundComp) + Number(data.lwfComp) + Number(data.gratuityComp); 
-    const grossIncome = (basicIncome + initialAddition);
-    const initialDeduction = Number(data.providentFundSelf) + Number(data.lwfSelf) + Number(data.gratuityComp); 
-    const basicTds = 0;
+        endDateTime += (86400000 - 1);
 
-    $(".grossIncome").text(grossIncome*12);
-    $(".totalEarningBasic").text(basicIncome*12);
-    $(".totalDeductionCalc").text( initialDeduction *12);
-}
+        let givenDateTime = Date.parse(date); 
 
-function calculateTax() {
+        if ( givenDateTime >= startDateTime && (givenDateTime <= endDateTime || endDateTime === Infinity )) {  // Filter out the entries on the basis of date range
+            requiredPayroll = payroll;
+        } 
+    })
 
+    if (requiredPayroll) {
+        $("#payrollId").val(requiredPayroll.id);
+        $("#pscwPayStartdate").val(requiredPayroll.payrollStartDate);
+        $("#pscwPayEndDate").val(requiredPayroll.payrollEndDate);
+        $("#pscwPayBasic").val(requiredPayroll.basicPay);
+        $("#pscwPayHRA").val(requiredPayroll.hrAllowance);
+        $("#pscwPayEA").val(requiredPayroll.executiveAllowance);
+        $("#pscwPayPF1").val(requiredPayroll.providentFundComp);
+        $("#pscwPayPF2").val(requiredPayroll.providentFundSelf);
+        $("#pscwPayLWF1").val(requiredPayroll.lwfComp);
+        $("#pscwPayLWF2").val(requiredPayroll.lwfSelf);
+        $("#pscwPayGratuity").val(requiredPayroll.gratuityComp);
+        $("#pscwPayGIPremium").val(requiredPayroll.groupInsuranceAmount);
+        $("#pscwPayGIPremiumFrequency").val(requiredPayroll.groupInsuranceFreq);
+        $("#pscwPayGIPremiumDate").val(requiredPayroll.groupInsuranceDate);
+        $("#pscwPayBonusAmount").val(requiredPayroll.bonusAmount);
+        $("#pscwPayBonusFrequency").val(requiredPayroll.bonusFreq);
+        $("#pscwPayBonusDate").val(requiredPayroll.bonusDate);
+        $("#pscwPayBonusDelay").val(requiredPayroll.bonusDelay);
+        $("#pscwTaxRegime").val(requiredPayroll.taxRegime); 
+    } else {
+        $("#payrollId").val(null);
+        $("#pscwPayStartdate").val(null);
+        $("#pscwPayEndDate").val(null);
+        $("#pscwPayBasic").val(null);
+        $("#pscwPayHRA").val(null);
+        $("#pscwPayEA").val(null);
+        $("#pscwPayPF1").val(null);
+        $("#pscwPayPF2").val(null);
+        $("#pscwPayLWF1").val(null);
+        $("#pscwPayLWF2").val(null);
+        $("#pscwPayGratuity").val(null);
+        $("#pscwPayGIPremium").val(null);
+        $("#pscwPayGIPremiumFrequency").val(null);
+        $("#pscwPayGIPremiumDate").val(null);
+        $("#pscwPayBonusAmount").val(null);
+        $("#pscwPayBonusFrequency").val(null);
+        $("#pscwPayBonusDate").val(null);
+        $("#pscwPayBonusDelay").val(null);
+        $("#pscwTaxRegime").val(null);
+    }
 }
 
 async function setDataFromForm() {
 
     const id = $("#payrollId").val(); 
-    if (id === null || id === undefined) { 
-        showError("Error! Id not defined");
-    }
 
-    const docRef = doc(db, "payrollInformation", id);
-
-    let modifiedPayroll = {}
+    let modifiedPayroll = {};
+    modifiedPayroll.payrollStartDate = $("#pscwPayStartdate").val();
+    modifiedPayroll.payrollEndDate = $("#pscwPayEndDate").val();
     modifiedPayroll.basicPay = $("#pscwPayBasic").val();
     modifiedPayroll.bonusAmount = $("#pscwPayBonusAmount").val();
     modifiedPayroll.bonusDate = $("#pscwPayBonusDate").val();
@@ -72,8 +94,13 @@ async function setDataFromForm() {
     modifiedPayroll.providentFundSelf = $("#pscwPayPF2").val();
     modifiedPayroll.taxRegime = $("#pscwTaxRegime").val();
 
-    let data = payrollConverter.toFirestore(modifiedPayroll)
-    let response = await setDoc(docRef, data); console.log(response);
+    if (id) { 
+        const docRef = doc(db, "payrollInformation", id);
+        let data = payrollConverter.toFirestore(modifiedPayroll)
+        await setDoc(docRef, data); 
+    } else {
+        await addDoc(collection(db, "payrollInformation"), payrollConverter.toFirestore(modifiedPayroll)); 
+    }
 
     showSuccess("Data has been saved successfully");
 }
@@ -94,9 +121,128 @@ function showError(msg) {
     setTimeout(() => { $(".ctcDetailForm .alert-danger").hide(); }, 5000)
 }
 
+function fillYear(element) {
+    let list = '';
+    for (let i = 2021; i<2030; i++) {
+        list += `<option value=${i}>${i}</option>`;
+    }
+    $(element).html(list);
+}
+
+function fillMonth(element) {
+    let list = ''; 
+    for (let i=0; i<12; i++) {
+        list += `<option value="${i+1}">${monthNames[i]}</option>`;
+    }
+    $(element).html(list);
+}
+
+function calculateCess(totalTax) {
+    return totalTax * 0.04;
+}
+
+function getBasicTax(totalBasicIncome) {
+    if (totalBasicIncome > 0 && totalBasicIncome <= 250000) {
+        return 0;
+    } else if (totalBasicIncome > 250000 && totalBasicIncome <= 500000) {
+        return totalBasicIncome * 0.05 * 1 - 250000 * 0.05;
+    } else if (totalBasicIncome > 500000 && totalBasicIncome <= 750000) {
+        return totalBasicIncome * 0.05 * 2 - (250000 + 500000) * 0.05;
+    } else if (totalBasicIncome > 750000 && totalBasicIncome <= 1000000) {
+        return totalBasicIncome * 0.05 * 3 - (250000 + 500000 + 750000) * 0.05;
+    } else if (totalBasicIncome > 1000000 && totalBasicIncome <= 1250000) {
+        return totalBasicIncome * 0.05 * 4 - (250000 + 500000 + 750000 + 1000000) * 0.05;
+    } else if (totalBasicIncome > 1250000 && totalBasicIncome <= 1500000) {
+        return totalBasicIncome * 0.05 * 5 - (250000 + 500000 + 750000 + 1000000 + 1250000) * 0.05;
+    } else { // greater than 15 lakh
+        return totalBasicIncome * 0.05 * 6 - (250000 + 500000 + 750000 + 1000000 + 1250000 + 1500000) * 0.05;
+    }
+}
+
+function calculateBonus(payroll, date) {
+    
+    let disbursalMonths = [2,5,8,11];
+    let checkMonth = date.getMonth() + 1;
+
+    if (disbursalMonths.includes(checkMonth)) {
+        return payroll.bonusAmount;
+    } 
+    return 0;
+}
+
+function calculateTax(payroll, date) {
+    const basicIncome = Number(payroll.basicPay) + Number(payroll.hrAllowance) + Number(payroll.executiveAllowance);
+    let accumulatedBonus = 0; 
+    for (let i=0; i<12; i++) { // iteration for 12 months
+        accumulatedBonus += calculateBonus(payroll, date);
+        
+        let flexibleIncome = ( basicIncome + accumulatedBonus ) * 12;
+        if ( date.getMonth() === i ) {
+            return getBasicTax(flexibleIncome) / 12; 
+        } 
+    } 
+    return 0;
+}
+
+async function predictSalary(month, year) {
+
+    // Retrieving required payroll
+    let date = year + '-' + month + '-' + '01'; 
+    let tempDate = new Date(date);
+
+    let q = query(collection(db, "payrollInformation").withConverter(payrollConverter));
+    const querySnapshot = await getDocs(q);
+
+    let requiredPayroll = {};
+    querySnapshot.forEach((doc) => { 
+        let data = doc.data(); 
+        data.id = doc.id;
+        let startDateTime = data.payrollStartDate ?  Date.parse(data.payrollStartDate) : 0;
+        let endDateTime = data.payrollEndDate ?  Date.parse(data.payrollEndDate) : Infinity;
+
+        endDateTime += (86400000 - 1); 
+
+        let givenDateTime = Date.parse(date); console.log(date, startDateTime, givenDateTime, endDateTime);
+        if ( givenDateTime >= startDateTime && (givenDateTime <= endDateTime || endDateTime === Infinity )) {  // Filter out the entries on the basis of date range
+            requiredPayroll = data;
+        } 
+    }); 
+
+    // Calculation for salary (monthly)
+    const basicIncome = Number(requiredPayroll.basicPay) + Number(requiredPayroll.hrAllowance) + Number(requiredPayroll.executiveAllowance);
+    
+    // Deduction from CTC
+    const deductionFromComp = Number(requiredPayroll.providentFundComp) + Number(requiredPayroll.lwfComp) + Number(requiredPayroll.gratuityComp); 
+    
+    // Gross income
+    const grossIncome = basicIncome + deductionFromComp;
+
+    // Total tax for the given month
+    const totalTax = calculateTax(requiredPayroll, tempDate); 
+
+    // CESS on the tax
+    const totalCess = calculateCess(totalTax); 
+    
+    // Total accumulated tax
+    const totalFinalTax = Math.round(totalTax + totalCess); 
+
+    // Total final deduction
+    const deductionFromSelf = Number(requiredPayroll.providentFundSelf) + Number(requiredPayroll.lwfSelf) + Number(requiredPayroll.gratuityComp) + totalFinalTax; 
+    
+    // In Hand Salary
+    const inHandIncome = basicIncome - deductionFromSelf; 
+
+    console.log(Math.round(inHandIncome));
+}
+
 $(document).ready(() => {
     
-    loadDataToForm();
+    let today = new Date();
+    // load CTC data for today
+    let todatStr = today.getFullYear() + '-' + (today.getMonth()+1) + '-' + today.getDate();
+    $("#pscwSearchDate").val(todatStr);
+
+    loadDataToForm(todatStr); 
 
     $(".ctcDetailTitle").click(() => {
         $(".pscw-detail-item").hide(); 
@@ -113,4 +259,31 @@ $(document).ready(() => {
     $("#savePayInfo").click(() => {
         setDataFromForm();
     }) 
+
+    $(".salaryPredictionTitle").click(() => {
+        $(".pscw-detail-item").hide(); 
+        if ($(".salaryPredictionTitle").hasClass('active')) {
+            $(".salaryPredictionTitle").removeClass("active");
+            $(".salaryPredictionForm").hide();
+        } else {
+            $(".pscw-detail-header").removeClass("active");
+            $(".salaryPredictionTitle").addClass("active");
+            $(".salaryPredictionForm").show(); 
+        }
+    })
+
+    fillYear("#pscwSalaryPredictYear");
+    fillMonth("#pscwSalaryPredictMonth");
+
+    $("#findSalaryPrediction").click(() => {
+        let year = $("#pscwSalaryPredictYear").val();
+        let month = $("#pscwSalaryPredictMonth").val();
+
+        predictSalary(Number(month) + 1, year);
+    })
+
+    $(document).on('change', "#pscwSearchDate", () => {
+        let date = $("#pscwSearchDate").val();
+        loadDataToForm(date);
+    })
 })

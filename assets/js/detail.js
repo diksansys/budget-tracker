@@ -163,7 +163,7 @@ async function loadList(options = null) {
             fD = Date.parse(options.fromDate); 
         } 
 
-        tD += 86400000;
+        tD += (86400000 - 1);
 
         let gD = Date.parse(givenDate); 
 

@@ -16,6 +16,9 @@ class Payroll {
         providentFundComp,
         providentFundSelf,
         taxRegime,
+        payrollStartDate,
+        payrollEndDate,
+
     ) {
         this.basicPay = basicPay
         this.bonusAmount = bonusAmount
@@ -33,6 +36,8 @@ class Payroll {
         this.providentFundComp = providentFundComp
         this.providentFundSelf = providentFundSelf
         this.taxRegime = taxRegime
+        this.payrollStartDate = payrollStartDate
+        this.payrollEndDate = payrollEndDate
     }
 }
 
@@ -54,7 +59,9 @@ const payrollConverter = {
             lwfSelf: payroll.lwfSelf,
             providentFundComp: payroll.providentFundComp,
             providentFundSelf: payroll.providentFundSelf,
-            taxRegime: payroll.taxRegime
+            taxRegime: payroll.taxRegime,
+            payrollStartDate: payroll.payrollStartDate,
+            payrollEndDate: payroll.payrollEndDate
         };
     },
     fromFirestore: (snapshot, options) => {
@@ -75,7 +82,9 @@ const payrollConverter = {
             data.lwfSelf,
             data.providentFundComp,
             data.providentFundSelf,
-            data.taxRegime
+            data.taxRegime,
+            data.payrollStartDate,
+            data.payrollEndDate
         );
     }
 };

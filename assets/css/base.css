@@ -607,37 +607,22 @@ span.uidItemTitle {
 .pscw-content {margin-left: 1em;}
 .pscw-list h5 {
     font-weight: bold;
-    font-size: 16px;
-    text-align: center;
-    padding: 20px 0;
+    font-size: 14px;
+    padding: 10px 0;
     text-transform: uppercase;
 }
 
 .pscw-detail-header {
-    background: white;
-    color: black;
-    padding: 20px;
     font-weight: bold;
     font-size: 14px;
     display: flex;
-    margin: 12px 0;
-    margin-bottom: 0;
-    border: 1px solid black;
 }
 
 .pscw-detail-header .active {
     background: linear-gradient(45deg, #4c124c, #580458, #b99fa2);
 }
 
-.pscw-detail-header.active {
-    background: black;
-    color: white;
-}
-
-.pscw-detail-item {
-    padding: 20px;
-    background: #58045808;
-}
+.pscw-detail-header.active {color: #580458;}
 
 span.pdo-title {
     font-weight: bold;
@@ -651,4 +636,22 @@ span.pdo-content {
     background: #5804580f;
     border-radius: 1em;
     font-size: 14px;
+}
+form.ctcDetailContentForm {
+    border-top: 1px solid #dee2e6;
+}
+.inputWrapper {
+    background: white;
+    padding: 12px;
+    border: 1px solid #e9ecef;
+    margin: 10px 0;
+}
+.pscw-item {
+    padding: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 8px;
+}
+
+.pscw-item, .pscw-item input, .pscw-item select, .pscw-item h5, .pscw-item button {
+    font-size: 12px;
 }
