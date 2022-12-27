@@ -1,5 +1,5 @@
 const categoryRelation = {
-    "VEX" : [ "GRO", "MED", "REC", "SHO", "OTT",  "EXP" ],
+    "VEX" : [ "GRO", "MED", "REC", "SHO", "OTT", "FOD", "MOV", "DON", "EXP" ],
     "FEX" : ["TBJ","TOD"],
     "INV" : ["CRY","PPF","EIN"],
     "INC" : ["SAL","ESL"]
@@ -13,6 +13,9 @@ const categoryDictionary = {
     "MED" : "Medicine",
     "REC" : "Recharge",
     "SHO" : "Shopping",
+    "FOD" : "Foods & Drinks",
+    "DON" : "Donations",
+    "MOV" : "Movies",
     "OTT" : "OTT",
     "EXP" : "Extra Expense",
     "TBJ" : "To Bauji",
@@ -28,7 +31,10 @@ const iconDictionary = {
     "MED" : "vaccines",
     "REC" : "phone_android",
     "SHO" : "shop",
+    "FOD" : "restaurant",
+    "DON" : "volunteer_activism",
     "OTT" : "movie",
+    "MOV" : "theaters",
     "EXP" : "monetization_on",
     "TBJ" : "person",
     "TOD" : "woman",

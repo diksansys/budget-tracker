@@ -51,7 +51,7 @@ span.highlighted-text {
     color: beige;
 }
 .head-title {
-    padding: 12px;
+    padding: 6px 12px;
     background: white;
     font-size: 20px;
     color: #580e58;
@@ -59,7 +59,7 @@ span.highlighted-text {
     border-bottom: 1px solid #ccc;
 } 
 .list-section {
-    padding: 0 12px;
+    padding: 2px;
     padding-top: 12px;
 }
 .form-wrap {
@@ -221,7 +221,7 @@ ul.lrd-unit-list li {
 }
 
 .top-bar-wrap {
-    padding: 8px;
+    padding: 4px 0;
     overflow: hidden;
 }
 
@@ -464,9 +464,10 @@ span.input-label {
     color: magenta;
 }
 .badge.variable-badge {
-    padding: 8px;
+    padding: 6px;
     border: 1px solid #4c124c;
     border-radius: 1em;
+    margin: 4px;
 }
 .tb-action, .tb-reset {
     float: right;
