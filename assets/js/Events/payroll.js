@@ -141,7 +141,7 @@ function calculateCess(totalTax) {
     return totalTax * 0.04;
 }
 
-function getBasicTax(totalBasicIncome) {
+function getBasicTax(totalBasicIncome) { 
     if (totalBasicIncome > 0 && totalBasicIncome <= 250000) {
         return 0;
     } else if (totalBasicIncome > 250000 && totalBasicIncome <= 500000) {
@@ -159,26 +159,33 @@ function getBasicTax(totalBasicIncome) {
     }
 }
 
-function calculateBonus(payroll, date) {
+function calculateBonus(payroll, month) {
     
-    let disbursalMonths = [2,5,8,11];
-    let checkMonth = date.getMonth() + 1;
+    // let disbursalMonths = [5,8,11];
+    // let checkMonth = month + 1;
 
-    if (disbursalMonths.includes(checkMonth)) {
-        return payroll.bonusAmount;
-    } 
-    return 0;
+    // if (disbursalMonths.includes(checkMonth)) {
+    //     return Number(payroll.bonusAmount);
+    // } 
+    // //return 0;
+    let bonusMap = [0,0,0,0, 2307.33, 0,0, payroll.bonusAmount, 0,0, payroll.bonusAmount, 0];
+    return Number(bonusMap[month]);
 }
 
 function calculateTax(payroll, date) {
     const basicIncome = Number(payroll.basicPay) + Number(payroll.hrAllowance) + Number(payroll.executiveAllowance);
+
+    // Bonus Calculation
     let accumulatedBonus = 0; 
-    for (let i=0; i<12; i++) { // iteration for 12 months
-        accumulatedBonus += calculateBonus(payroll, date);
+    for (let i=0; i<12; i++) {
+        let bonus = calculateBonus(payroll, i); 
+        accumulatedBonus += Number(bonus); 
         
-        let flexibleIncome = ( basicIncome + accumulatedBonus ) * 12;
-        if ( date.getMonth() === i ) {
-            return getBasicTax(flexibleIncome) / 12; 
+        let fixedIncome = basicIncome * 12; 
+        let flexibleIncome = fixedIncome + accumulatedBonus; 
+
+        if ( Number(date.getMonth()) === i ) { 
+            return getBasicTax(Math.round(flexibleIncome)) / 12; 
         } 
     } 
     return 0;
@@ -202,7 +209,7 @@ async function predictSalary(month, year) {
 
         endDateTime += (86400000 - 1); 
 
-        let givenDateTime = Date.parse(date); console.log(date, startDateTime, givenDateTime, endDateTime);
+        let givenDateTime = Date.parse(date); 
         if ( givenDateTime >= startDateTime && (givenDateTime <= endDateTime || endDateTime === Infinity )) {  // Filter out the entries on the basis of date range
             requiredPayroll = data;
         } 
@@ -215,7 +222,7 @@ async function predictSalary(month, year) {
     const deductionFromComp = Number(requiredPayroll.providentFundComp) + Number(requiredPayroll.lwfComp) + Number(requiredPayroll.gratuityComp); 
     
     // Gross income
-    const grossIncome = basicIncome + deductionFromComp;
+    const grossIncome = basicIncome + deductionFromComp; 
 
     // Total tax for the given month
     const totalTax = calculateTax(requiredPayroll, tempDate); 
@@ -227,12 +234,18 @@ async function predictSalary(month, year) {
     const totalFinalTax = Math.round(totalTax + totalCess); 
 
     // Total final deduction
-    const deductionFromSelf = Number(requiredPayroll.providentFundSelf) + Number(requiredPayroll.lwfSelf) + Number(requiredPayroll.gratuityComp) + totalFinalTax; 
+    const deductionFromSelf = Number(requiredPayroll.providentFundSelf) + Number(requiredPayroll.lwfSelf) + totalFinalTax; 
     
     // In Hand Salary
-    const inHandIncome = basicIncome - deductionFromSelf; 
+    const inHandIncome = basicIncome + calculateBonus(requiredPayroll, tempDate.getMonth()) - deductionFromSelf; 
 
-    console.log(Math.round(inHandIncome));
+    $(".pscw-detail-display").show();
+    if (!isNaN(inHandIncome)) {
+        $(".display-number").text(inHandIncome);
+    } else {
+        $(".display-number").text("No data found.");
+    }
+    
 }
 
 $(document).ready(() => {
@@ -279,7 +292,7 @@ $(document).ready(() => {
         let year = $("#pscwSalaryPredictYear").val();
         let month = $("#pscwSalaryPredictMonth").val();
 
-        predictSalary(Number(month) + 1, year);
+        predictSalary(Number(month), year);
     })
 
     $(document).on('change', "#pscwSearchDate", () => {

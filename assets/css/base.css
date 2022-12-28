@@ -656,3 +656,8 @@ form.ctcDetailContentForm {
 .pscw-item, .pscw-item input, .pscw-item select, .pscw-item h5, .pscw-item button {
     font-size: 12px;
 }
+.pscw-detail-display {
+    padding: 12px;
+    text-align: center;
+    background: #00800014;
+}
