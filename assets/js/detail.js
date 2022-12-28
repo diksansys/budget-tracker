@@ -208,7 +208,7 @@ async function loadList(options = null) {
     let totalInvestment = 0;
     let totalIncome = 0;
     let totalCatTotal = {'VEX' : 0,'FEX' : 0,'INV' : 0,'INC' : 0};
-    let totalSubCatTotal = {"GRO" : 0,"MED" : 0,"REC" : 0,"SHO" : 0,"OTT" : 0,"EXP" : 0,"TBJ" : 0,"TOD" : 0,"CRY" : 0,"PPF" : 0,"EIN" : 0,"SAL" : 0,"ESL" :0 };
+    let totalSubCatTotal = {"GRO" : 0,"MED" : 0,"REC" : 0,"SHO" : 0,"OTT" : 0, "FOD": 0, "MOV": 0, "DON" :0, "EXP" : 0,"TBJ" : 0,"TOD" : 0,"CRY" : 0,"PPF" : 0,"EIN" : 0,"SAL" : 0,"ESL" :0 };
     for (let parsedD in sortedList) {
         // Expenses by datetime group
         let expenseGroup = sortedList[parsedD]; 
@@ -221,7 +221,7 @@ async function loadList(options = null) {
 
         // Total of all transaction by category 
         let dailyCatTotal = {'VEX' : 0,'FEX' : 0,'INV' : 0,'INC' : 0};
-        let dailySubCatTotal = {"GRO" : 0,"MED" : 0,"REC" : 0,"SHO" : 0,"OTT" : 0,"EXP" : 0,"TBJ" : 0,"TOD" : 0,"CRY" : 0,"PPF" : 0,"EIN" : 0,"SAL" : 0,"ESL" :0 };
+        let dailySubCatTotal = {"GRO" : 0,"MED" : 0,"REC" : 0,"SHO" : 0,"OTT" : 0, "FOD" : 0, "MOV" : 0, "DON": 0, "EXP" : 0,"TBJ" : 0,"TOD" : 0,"CRY" : 0,"PPF" : 0,"EIN" : 0,"SAL" : 0,"ESL" :0 };
                 
         expenseGroup.forEach((expense) => {
 
